@@ -72,7 +72,8 @@ public class GameView extends JPanel {
 		super.paintComponent(g);
 
 		// 타이머 및 점수 표시
-		g.drawString("남은 시간: " + gameModel.getTimeLeft(), 10, 20);
-		g.drawString("점수: " + gameModel.getScore(), 10, 40);
+		g.setFont(new Font("Arial", Font.BOLD, 24));
+		g.drawString("time left: " + gameModel.getTimeLeft(), 900, 600);
+		g.drawString("score: " + gameModel.getScore(), 900, 650);
 	}
 }
