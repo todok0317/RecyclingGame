@@ -74,7 +74,7 @@ public class GameController implements MouseListener, MouseMotionListener {
 					// 올바른 분리수거인지 알아냄
 					boolean isCorrect = gameModel.isCorrectBin(bin);
 					gameModel.updateScore(isCorrect);	// 점수 업데이트
-					gameView.remove(draggedItem);	// 기존 아이템 제거
+					gameView.removeItem();			// 기존 아이템 제거
 					gameModel.provideNewItem();		// 새 아이템 제공
 					gameView.displayNewItem();		// 새 아이템 배치
 					break;

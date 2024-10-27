@@ -39,6 +39,11 @@ public class GameView extends JPanel {
 			add(bins[i]); // 패널에 추가
 		}
 	}
+	
+	public void removeItem() {
+		// 기존 아이템을 화면에서 제거하는 메소드
+		remove(gameModel.getCurrentItem());
+	}
 
 	public void displayNewItem() {
 		// 새 아이템을 배치하는 메소드
