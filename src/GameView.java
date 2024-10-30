@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class GameView extends JPanel {
 	// ***************************
@@ -14,29 +15,25 @@ public class GameView extends JPanel {
 	public GameView(GameModel model) {
 		this.gameModel = model;
 		setLayout(null); // 절대 레이아웃으로 아이템 위치를 수동으로 설정
-		setSize(1200, 800);
-
-		displayBins(); 		// 분리수거 통 배치
-		displayNewItem();	// 아이템 배치
 	}
 
-	private void displayBins() {
+	public void displayBins() {
 		// 분리수거 통들을 배치하는 메소드
 		// 중앙 상단에 나란히 배치
 		int panelWidth = getWidth();
-		int binWidth = gameModel.getBins()[0].getWidth(); // 분리수거 통의 폭 (모든 통이 동일한 크기라고 가정)
-		int binHeight = gameModel.getBins()[0].getHeight();
-		int spacing = 100; // Bin 간격
+		int binWidth = gameModel.getBins().get(0).getWidth(); // 분리수거 통의 폭 (모든 통이 동일한 크기라고 가정)
+		int binHeight = gameModel.getBins().get(0).getHeight();
+		int spacing = 60; // Bin 간격
 
-		Bin[] bins = gameModel.getBins();
-		int totalWidth = (binWidth * bins.length) + (spacing * (bins.length - 1));
+		List<Bin> bins = gameModel.getBins();
+		int totalWidth = (binWidth * bins.size()) + (spacing * (bins.size() - 1));
 
 		int startX = (panelWidth - totalWidth) / 2; // 중앙 정렬을 위한 시작 X 좌표
 		int yPosition = 20; // 화면 상단에서 20px 아래
 
-		for (int i = 0; i < bins.length; i++) {
-			bins[i].setBounds(startX + i * (binWidth + spacing), yPosition, binWidth, binHeight);
-			add(bins[i]); // 패널에 추가
+		for (int i = 0; i < bins.size(); i++) {
+			bins.get(i).setBounds(startX + i * (binWidth + spacing), yPosition, binWidth, binHeight);
+			add(bins.get(i)); // 패널에 추가
 		}
 	}
 	

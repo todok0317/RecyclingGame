@@ -10,32 +10,23 @@ public class GameModel {
 	// ***************************
 
 	private List<Item> itemTemplates; // 아이템 템플릿 목록
-	private Bin[] bins; // 분리수거 통 목록
+	private List<Bin> bins; // 분리수거 통 목록
 	private Item currentItem; // 현재 제공 중인 아이템
 	private int score; // 점수
 	private int timeLeft; // 남은 시간
 	private Random random;
 
 	public GameModel() {
-		itemTemplates = new ArrayList<>();
-		bins = new Bin[3]; // 3개의 분리수거 통
 		score = 0;
 		timeLeft = 60; // 60초 동안 게임 진행
 		random = new Random();
-
-		initializeItemsAndBins();
-		provideNewItem(); // 첫 아이템 제공
 	}
-
-	private void initializeItemsAndBins() {
-		itemTemplates.add(new Item("플라스틱", "플라스틱", "images/plastic.png"));
-		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
-		itemTemplates.add(new Item("종이", "종이", "images/paper.png"));
-
-		bins[0] = new Bin("플라스틱", "images/plastic_bin.png");
-		bins[1] = new Bin("유리", "images/glass_bin.png");
-		bins[2] = new Bin("종이", "images/paper_bin.png");
-	}
+	
+    public void setLevelData(LevelData levelData) {
+    	// 선택된 레벨의 데이터를 받아 초기화하는 메소드
+        this.itemTemplates = new ArrayList<>(levelData.getItemTemplates());
+        this.bins = new ArrayList<>(levelData.getBins());
+    }
 
 	public void provideNewItem() {
 		// 새로운 아이템을 제공하는 메소드
@@ -49,7 +40,7 @@ public class GameModel {
 		return currentItem;
 	}
 
-	public Bin[] getBins() {
+	public List<Bin> getBins() {
 		return bins;
 	}
 
