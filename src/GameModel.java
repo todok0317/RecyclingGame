@@ -17,13 +17,18 @@ public class GameModel {
 	private Random random;
 
 	public GameModel() {
+	}
+	
+	public void resetStates() {
+		// 게임 상태 초기화
 		score = 0;
-		timeLeft = 60; // 60초 동안 게임 진행
+		timeLeft = 30;
 		random = new Random();
 	}
 	
     public void setLevelData(LevelData levelData) {
     	// 선택된 레벨의 데이터를 받아 초기화하는 메소드
+    	resetStates();
         this.itemTemplates = new ArrayList<>(levelData.getItemTemplates());
         this.bins = new ArrayList<>(levelData.getBins());
     }

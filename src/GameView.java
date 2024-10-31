@@ -16,6 +16,13 @@ public class GameView extends JPanel {
 		this.gameModel = model;
 		setLayout(null); // 절대 레이아웃으로 아이템 위치를 수동으로 설정
 	}
+	
+	public void resetView() {
+		removeAll(); // 컴포넌트 모두 제거 (아이템, 분리수거 통들)
+		
+		displayBins();	// 분리수거 통 배치
+		displayNewItem();	// 아이템 배치
+	}
 
 	public void displayBins() {
 		// 분리수거 통들을 배치하는 메소드

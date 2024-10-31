@@ -40,20 +40,18 @@ public class GameFrame extends JFrame {
 		setLocationRelativeTo(null); // 프레임을 중앙에 표시
 	}
 
-	private void showLevelSelectMenu() {
-		// 메뉴 화면에서 레벨 선택 화면으로 전환
+	public void showLevelSelectMenu() {
+		// 레벨 선택 화면으로 전환
 		cardLayout.show(getContentPane(), "LevelSelect");
 	}
 
 	private void startGameWithLevel(String level) {
 		// 게임 시작 메소드, 선택한 레벨에 맞는 데이터를 불러와 게임을 시작
 		LevelData levelData = levelManager.getLevelData(level); // 레벨 데이터 받기
-		gameModel.setLevelData(levelData);	// 해당 레벨로 게임 설정
+		gameModel.setLevelData(levelData);	// 해당 레벨로 게임 데이터 설정
+		
 		cardLayout.show(getContentPane(), "Game"); // 게임 화면으로 전환
 		
-		gameView.displayBins();	// 분리수거 통 배치
-		gameModel.provideNewItem();	// 첫 아이템 제공
-		gameView.displayNewItem(); // 첫 아이템 표시
-		new GameController(gameModel, gameView).startGame(); // 컨트롤러 생성 및 게임 시작
+		new GameController(gameModel, gameView, this).startGame(); // 컨트롤러 생성 및 게임 시작
 	}
 }

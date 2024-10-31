@@ -11,19 +11,25 @@ public class GameController implements MouseListener, MouseMotionListener {
 
 	private GameModel gameModel;
 	private GameView gameView;
+	private GameFrame gameFrame;
 	private Timer gameTimer;
 	private Item draggedItem;	// 드래그된 아이템 (드래그 할 수 있게 설정된 아이템)
 
-	public GameController(GameModel model, GameView view) {
+	public GameController(GameModel model, GameView view, GameFrame gameFrame) {
 		this.gameModel = model;
 		this.gameView = view;
+		this.gameFrame = gameFrame;
 
+		// gameView에 마우스리스너 부착
 		gameView.addMouseListener(this);
 		gameView.addMouseMotionListener(this);
 	}
 
 	public void startGame() {
 		// 게임을 시작하는 메소드
+		gameModel.provideNewItem();	// 첫 아이템 제공
+		gameView.resetView(); // 게임 화면 초기화
+		
 		// 1초마다 시간을 감소시키고 남은 시간이 0이 되면 게임을 종료시키는 타이머 생성
 		gameTimer = new Timer(1000, e -> {
 			gameModel.decrementTime();	// 시간 감소
@@ -40,6 +46,12 @@ public class GameController implements MouseListener, MouseMotionListener {
 		gameTimer.stop();	// 타이머 중지
 		// 메시지 다이얼로그로 최종 점수 표시
 		JOptionPane.showMessageDialog(gameView, "게임 종료! 점수: " + gameModel.getScore());
+		
+		gameFrame.showLevelSelectMenu();	// 레벨 선택 화면으로 돌아감
+		
+		// gameView에서 마우스리스너 제거 (제거 안 해주었더니 게임 재시작 횟수만큼 이벤트 중복 생성)
+		gameView.removeMouseListener(this);
+		gameView.removeMouseMotionListener(this);
 	}
 
 	@Override
