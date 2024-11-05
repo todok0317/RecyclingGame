@@ -15,6 +15,7 @@ public class GameView extends JPanel {
 	public GameView(GameModel model) {
 		this.gameModel = model;
 		setLayout(null); // 절대 레이아웃으로 아이템 위치를 수동으로 설정
+		setBackground(new Color(228, 216, 216));
 	}
 	
 	public void resetView() {

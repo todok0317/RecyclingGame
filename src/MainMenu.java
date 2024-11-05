@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class MainMenu extends JPanel {
 	// ***************************
@@ -10,18 +13,75 @@ public class MainMenu extends JPanel {
 	// ***************************
 	
 	public MainMenu(ActionListener startGameListener) {
-		setLayout(new FlowLayout(FlowLayout.CENTER, 40, 200));
+	    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // 세로 방향으로 정렬
 
-		JLabel title = new JLabel("Recycling Simulation Game", SwingConstants.CENTER);
-		title.setFont(new Font("Arial", Font.BOLD, 24));
-		add(title);
+	    
+	    ImageIcon guideIcon = new ImageIcon("images/trashEarth2.png");
+	    JLabel imageLabel = new JLabel(guideIcon);
+	    imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // X축으로 중앙 정렬
+	    add(imageLabel); // 이미지 추가
 
-		JButton startButton = new JButton("Game Start");
-		startButton.setFont(new Font("Arial", Font.PLAIN, 18));
+	    add(Box.createVerticalStrut(10)); //이미지, 타이틀 사이의 간격 조정
 
-		// 게임 시작 버튼 클릭 시 전달 받은 startGameListener의 메소드 실행
-		startButton.addActionListener(startGameListener);
+	    JLabel title = new JLabel("Recycling Simulation Game", SwingConstants.CENTER);
+	    title.setFont(new Font("한컴 말랑말랑 Bold", Font.BOLD, 34));
+	    title.setAlignmentX(Component.CENTER_ALIGNMENT); // X축으로 중앙 정렬
+	    add(title); 
 
-		add(startButton);
+	  
+	    JLabel subtitle = new JLabel("환경을 지키는 분리수거 미션, 시작해볼까요?", SwingConstants.CENTER);
+	    subtitle.setFont(new Font("한컴 말랑말랑 Bold", Font.PLAIN, 20));
+	    subtitle.setAlignmentX(Component.CENTER_ALIGNMENT); // X축으로 중앙 정렬
+	    add(subtitle); // 부제목 추가
+	    add(Box.createVerticalStrut(20)); // 제목, 버튼 사이 간격 추가
+
+	
+	    JButton startButton = new JButton("Game Start");
+	    startButton.setFont(new Font("한컴 말랑말랑 Bold", Font.BOLD, 18));
+	    startButton.setPreferredSize(new Dimension(150, 50)); // 기본 크기 설정
+	    startButton.setFocusPainted(false); // 버튼 포커스 테두리 제거
+	    startButton.setOpaque(true); // 배경을 불투명하게 설정
+	    startButton.setBackground(new Color(203, 126, 126)); // 배경색 설정
+	    
+	    JButton guideButton = new JButton("분리배출 가이드");
+	    guideButton.setFont(new Font("한컴 말랑말랑 Bold", Font.BOLD, 18));
+	    guideButton.setPreferredSize(new Dimension(150, 50)); // 기본 크기 설정
+	    guideButton.setFocusPainted(false); // 버튼 포커스 테두리 제거
+	    guideButton.setOpaque(true); // 배경을 불투명하게 설정
+	    guideButton.setBackground(new Color(203, 126, 126));
+	    
+
+	    // 게임 시작 버튼 클릭 시 전달 받은 startGameListener의 메소드 실행
+	    startButton.addActionListener(startGameListener);
+	    startButton.setAlignmentX(Component.CENTER_ALIGNMENT); // X축 중앙 정렬로
+
+	 // 가이드 버튼 클릭 하면 URL 열기
+        guideButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openWebPage("https://www.junggu.seoul.kr/content.do?cmsid=14189");
+            }
+        });
+        
+	    guideButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    add(startButton); 
+	    add(Box.createVerticalStrut(10));
+	    add(guideButton);
+
+	    
+	    setBackground(new Color(228, 216, 216)); // 메인 색 조정
+	    
 	}
-}
+	
+
+	 private void openWebPage(String urlString) {
+	        try {
+	            Desktop desktop = Desktop.getDesktop();
+	            URI uri = new URI(urlString);
+	            desktop.browse(uri);
+	        } catch (IOException | URISyntaxException e) {
+	            e.printStackTrace();
+	            JOptionPane.showMessageDialog(this, "URL을 열 수 없습니다.", "오류", JOptionPane.ERROR_MESSAGE);
+	        }
+	    }
+	}
