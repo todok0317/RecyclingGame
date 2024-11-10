@@ -34,10 +34,12 @@ public class LevelSelectMenu extends JPanel {
 
 		LevelButton level1Button = new LevelButton(1);
 		LevelButton level2Button = new LevelButton(2);
+		LevelButton level3Button = new LevelButton(3);
 
 		buttonPanel.add(level1Button);
-		add(Box.createVerticalStrut(200));
 		buttonPanel.add(level2Button);
+		buttonPanel.add(level3Button);
+		add(Box.createVerticalStrut(200));
 		add(buttonPanel);
 
 		setBackground(StyleManager.backgroundColor);

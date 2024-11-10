@@ -23,9 +23,10 @@ public class GameView extends JPanel {
 		
 		displayBins();	// 분리수거 통 배치
 		displayNewItem();	// 아이템 배치
+		displayTools();	// 도구 배치
 	}
 
-	public void displayBins() {
+	private void displayBins() {
 		// 분리수거 통들을 배치하는 메소드
 		// 중앙 상단에 나란히 배치
 		int panelWidth = getWidth();
@@ -70,6 +71,29 @@ public class GameView extends JPanel {
 		setComponentZOrder(newItem, 0); // Item의 z-인덱스를 가장 위로 설정
 
 		repaint(); // 화면 업데이트
+	}
+	
+	private void displayTools() {
+		// 도구들을 배치하는 메소드
+		// 우측 중앙에 세로로 배치
+		if (gameModel.getTools() != null) {
+			int panelHeight = getHeight();
+			int panelWidth = getWidth();
+			int toolWidth = gameModel.getBins().get(0).getWidth(); // 도구의 폭
+			int toolHeight = gameModel.getBins().get(0).getHeight();
+			int spacing = 30; // tool 간격
+	
+			List<Tool> tools = gameModel.getTools();
+			int totalHeight = (toolHeight * tools.size()) + (spacing * (tools.size() - 1));
+	
+			int startY = (panelHeight - totalHeight) / 2; // 중앙 정렬을 위한 시작 y 좌표
+			int xPosition = panelWidth - toolWidth;
+	
+			for (int i = 0; i < tools.size(); i++) {
+				tools.get(i).setBounds(xPosition, startY + i * (toolWidth + spacing), toolWidth, toolHeight);
+				add(tools.get(i)); // 패널에 추가
+			}
+		}
 	}
 
 	@Override

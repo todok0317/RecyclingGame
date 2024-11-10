@@ -11,6 +11,7 @@ public class GameModel {
 
 	private List<Item> itemTemplates; // 아이템 템플릿 목록
 	private List<Bin> bins; // 분리수거 통 목록
+	private List<Tool> tools; // 도구 목록
 	private Item currentItem; // 현재 제공 중인 아이템
 	private int score; // 점수
 	private int timeLeft; // 남은 시간
@@ -18,20 +19,25 @@ public class GameModel {
 
 	public GameModel() {
 	}
-	
+
 	public void resetStates() {
 		// 게임 상태 초기화
 		score = 0;
 		timeLeft = 30;
 		random = new Random();
 	}
-	
-    public void setLevelData(LevelData levelData) {
-    	// 선택된 레벨의 데이터를 받아 초기화하는 메소드
-    	resetStates();
-        this.itemTemplates = new ArrayList<>(levelData.getItemTemplates());
-        this.bins = new ArrayList<>(levelData.getBins());
-    }
+
+	public void setLevelData(LevelData levelData) {
+		// 선택된 레벨의 데이터를 받아 초기화하는 메소드
+		resetStates();
+		this.itemTemplates = new ArrayList<>(levelData.getItemTemplates());
+		this.bins = new ArrayList<>(levelData.getBins());
+		// 해당 레벨에 도구가 있다면 도구 목록 받기
+		if (levelData.getTools() != null)
+			this.tools = new ArrayList<>(levelData.getTools());
+		else
+			this.tools = null;
+	}
 
 	public void provideNewItem() {
 		// 새로운 아이템을 제공하는 메소드
@@ -47,6 +53,10 @@ public class GameModel {
 
 	public List<Bin> getBins() {
 		return bins;
+	}
+	
+	public List<Tool> getTools() {
+		return tools;
 	}
 
 	public int getScore() {
@@ -77,5 +87,10 @@ public class GameModel {
 	public boolean isCorrectBin(Bin bin) {
 		// 올바른 분리수거인지 리턴
 		return bin.isCorrectItem(currentItem);
+	}
+	
+	public void changeCurrentItem(String name, String type, String imagePath) {
+		// 현재 제공된 아이템 변경
+		currentItem = new Item(name, type, imagePath);
 	}
 }

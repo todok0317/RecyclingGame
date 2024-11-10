@@ -16,6 +16,8 @@ public class LevelManager {
 			return createDataLevel1();
 		case "level2":
 			return createDataLevel2();
+		case "level3":
+			return createDataLevel3();
 		}
 		return null;
 	}
@@ -50,5 +52,24 @@ public class LevelManager {
 		bins.add(new Bin("일반", "images/regular_bin.png"));
 
 		return new LevelData(itemTemplates, bins);
+	}
+	
+	private LevelData createDataLevel3() {
+		// 레벨3 데이터
+		List<Item> itemTemplates = new ArrayList<>();
+		itemTemplates.add(new Item("페트병", "페트", "images/petbottle.png"));
+		itemTemplates.add(new Item("라벨이 있는 페트병", "페트#cutter", "images/petbottle#cutter.png"));
+		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
+		itemTemplates.add(new Item("종이", "종이", "images/paper.png"));
+
+		List<Bin> bins = new ArrayList<>();
+		bins.add(new Bin("페트", "images/pet_bin.png"));
+		bins.add(new Bin("유리", "images/glass_bin.png"));
+		bins.add(new Bin("종이", "images/paper_bin.png"));
+		
+		List<Tool> tools = new ArrayList<>();
+		tools.add(new Tool("cutter", "images/cutter.png"));
+
+		return new LevelData(itemTemplates, bins, tools);
 	}
 }
