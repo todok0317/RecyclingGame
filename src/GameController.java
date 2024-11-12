@@ -64,10 +64,12 @@ public class GameController implements MouseListener, MouseMotionListener {
 	public void mousePressed(MouseEvent e) {
 		// 마우스를 누를 시
 		Point clickPoint = e.getPoint(); // 마우스를 누른 좌표
-		Item currentItem = gameModel.getCurrentItem(); // 현재 제공된 아이템
 		// 누른 좌표가 현재 제공된 아이템 위라면 아이템을 드래그할 수 있게 설정
-		if (currentItem != null && currentItem.getBounds().contains(clickPoint)) {
-			draggedItem = currentItem;
+		for (Item item : gameModel.getCurrentItem()) {
+			if (item.getBounds().contains(clickPoint)) {
+				draggedItem = item;
+				break;
+			}
 		}
 	}
 
@@ -88,6 +90,11 @@ public class GameController implements MouseListener, MouseMotionListener {
 			Point dropPoint = e.getPoint(); // 마우스를 뗀 좌표
 			sortWaste(dropPoint);
 			useTool(dropPoint);
+			// 현재 아이템이 없다면 새 아이템 제공
+			if (gameModel.getCurrentItem().isEmpty()) {
+				gameModel.provideNewItem(); // 새 아이템 제공
+				gameView.displayNewItem(); // 새 아이템 배치
+			}
 			draggedItem = null;
 		}
 	}
@@ -98,11 +105,10 @@ public class GameController implements MouseListener, MouseMotionListener {
 		for (Bin bin : gameModel.getBins()) {
 			if (bin.getBounds().contains(dropPoint)) {
 				// 올바른 분리수거인지 알아냄
-				boolean isCorrect = gameModel.isCorrectBin(bin);
+				boolean isCorrect = gameModel.isCorrectBin(bin, draggedItem);
 				gameModel.updateScore(isCorrect); // 점수 업데이트
-				gameView.removeItem(); // 기존 아이템 제거
-				gameModel.provideNewItem(); // 새 아이템 제공
-				gameView.displayNewItem(); // 새 아이템 배치
+				gameView.remove(draggedItem); // 드래그하고 있던 아이템 제거
+				gameModel.getCurrentItem().remove(draggedItem); // 드래그하고 있던 아이템 제거
 				break;
 			}
 		}
@@ -114,24 +120,25 @@ public class GameController implements MouseListener, MouseMotionListener {
 			// 마우스를 뗀 좌표에 위치한 도구를 알아냄
 			for (Tool tool : gameModel.getTools()) {
 				if (tool.getBounds().contains(dropPoint)) {
-					String toolName = tool.getName();
-					String itemType = draggedItem.getType();
-					String itemImagePath = draggedItem.getImagePath();
-					// 정규식을 사용하여 아이템의 타입에 '#도구이름'이 있는지 알아냄
-					Matcher matcher = Pattern.compile("#" + toolName).matcher(itemType);
-					if (matcher.find()) { // 있다면 제거
-						itemType = itemType.substring(0, matcher.start()) + itemType.substring(matcher.end());
+					Pattern pattern = Pattern.compile("#" + tool.getName() + "#");
+					Matcher matcher = pattern.matcher(draggedItem.getType());
+
+					if (matcher.find()) {
+						String[] seperatedItemNames = draggedItem.getName().split("[이|가]\\s[있|뭍][는|은]\\s");
+						String[] seperatedItemTypes = draggedItem.getType().split("#" + tool.getName() + "#");
+						String[] seperatedItemImagePaths = draggedItem.getImagePath().split("#" + tool.getName() + "#");
+
+						gameView.remove(draggedItem);
+						if (seperatedItemTypes.length < 2) {
+							gameModel.changeCurrentItem(seperatedItemNames[1], seperatedItemTypes[0],
+									seperatedItemImagePaths[0] + seperatedItemImagePaths[1]);
+						} else {
+							seperatedItemImagePaths[0] += ".png";
+							seperatedItemImagePaths[1] = "images/" + seperatedItemImagePaths[1];
+							gameModel.seperateItem(seperatedItemNames, seperatedItemTypes, seperatedItemImagePaths);
+						}
 					}
-					// 정규식을 사용하여 이미지 경로에 '#도구이름'이 있는지 알아냄
-					matcher = Pattern.compile("#" + toolName).matcher(itemImagePath);
-					if (matcher.find()) { // 있다면 제거
-						itemImagePath = itemImagePath.substring(0, matcher.start())
-								+ itemImagePath.substring(matcher.end());
-					}
-					gameView.removeItem(); // 기존 아이템 제거
-					// 현재 제공된 아이템을 도구 사용으로 가공된 아이템으로 변경
-					gameModel.changeCurrentItem(draggedItem.getName(), itemType, itemImagePath);
-					gameView.displayNewItem(); // 가공된 아이템 배치
+					gameView.displayNewItem();
 					break;
 				}
 			}

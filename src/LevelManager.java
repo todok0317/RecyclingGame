@@ -58,9 +58,10 @@ public class LevelManager {
 		// 레벨3 데이터
 		List<Item> itemTemplates = new ArrayList<>();
 		itemTemplates.add(new Item("페트병", "페트", "images/petbottle.png"));
-		itemTemplates.add(new Item("라벨이 있는 페트병", "페트#cutter", "images/petbottle#cutter.png"));
+		itemTemplates.add(new Item("라벨이 있는 페트병", "페트#cutter#종이", "images/petbottle#cutter#label.png"));
 		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
 		itemTemplates.add(new Item("종이", "종이", "images/paper.png"));
+		itemTemplates.add(new Item("음료수가 있는 페트병", "페트#sink#", "images/petbottle#sink#.png"));
 
 		List<Bin> bins = new ArrayList<>();
 		bins.add(new Bin("페트", "images/pet_bin.png"));
@@ -69,6 +70,7 @@ public class LevelManager {
 		
 		List<Tool> tools = new ArrayList<>();
 		tools.add(new Tool("cutter", "images/cutter.png"));
+		tools.add(new Tool("sink", "images/sink.png"));
 
 		return new LevelData(itemTemplates, bins, tools);
 	}

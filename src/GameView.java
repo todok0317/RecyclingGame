@@ -45,30 +45,31 @@ public class GameView extends JPanel {
 			add(bins.get(i)); // 패널에 추가
 		}
 	}
-	
-	public void removeItem() {
-		// 기존 아이템을 화면에서 제거하는 메소드
-		remove(gameModel.getCurrentItem());
-	}
 
 	public void displayNewItem() {
 		// 새 아이템을 배치하는 메소드
 		// 새 아이템을 추가
-		Item newItem = gameModel.getCurrentItem();
-		add(newItem);
+		// 아이템이 분리되어 현재 아이템이 여러개라면 전부 배치
+		List<Item> items = gameModel.getCurrentItem();
 
 		// 아이템의 위치 계산
 		int panelWidth = getWidth();
 		int panelHeight = getHeight();
-		int itemWidth = newItem.getWidth();
-		int itemHeight = newItem.getHeight();
+		int itemWidth = items.get(0).getWidth();
+		int itemHeight = items.get(0).getHeight();
+		int spacing = 40;
+		
+		List<Bin> bins = gameModel.getBins();
+		int totalWidth = (itemWidth * items.size()) + (spacing * (items.size() - 1));
 
-		int xPosition = (panelWidth - itemWidth) / 2; // 중앙 정렬을 위한 X 좌표
+		int startX = (panelWidth - totalWidth) / 2; // 중앙 정렬을 위한 X 좌표
 		int yPosition = panelHeight - itemHeight - 40; // 하단에서 20px 위로 위치
 
-		// 아이템 위치 설정
-		newItem.setBounds(xPosition, yPosition, itemWidth, itemHeight);
-		setComponentZOrder(newItem, 0); // Item의 z-인덱스를 가장 위로 설정
+		for (int i = 0; i < items.size(); i++) {
+			items.get(i).setBounds(startX + i * (itemWidth + spacing), yPosition, itemWidth, itemHeight);
+			add(items.get(i)); // 패널에 추가
+			setComponentZOrder(items.get(i), 0); // Item의 z-인덱스를 가장 위로 설정
+		}
 
 		repaint(); // 화면 업데이트
 	}
@@ -81,7 +82,7 @@ public class GameView extends JPanel {
 			int panelWidth = getWidth();
 			int toolWidth = gameModel.getBins().get(0).getWidth(); // 도구의 폭
 			int toolHeight = gameModel.getBins().get(0).getHeight();
-			int spacing = 30; // tool 간격
+			int spacing = 10; // tool 간격
 	
 			List<Tool> tools = gameModel.getTools();
 			int totalHeight = (toolHeight * tools.size()) + (spacing * (tools.size() - 1));
