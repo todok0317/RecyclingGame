@@ -43,8 +43,16 @@ public class GameModel {
 		// 새로운 아이템을 제공하는 메소드
 		// 아이템 템플릿에서 랜덤으로 1개의 아이템 제공
 		int index = random.nextInt(itemTemplates.size());
+		Item item = itemTemplates.get(index);
+		
 		currentItem = new ArrayList<>();
-		currentItem.add(new Item(itemTemplates.get(index).getName(), itemTemplates.get(index).getType(), itemTemplates.get(index).getIcon().toString()));
+		// 아이템을 복사하여 현재 아이템으로 설정
+		if (item instanceof ComplexItem) {
+			ComplexItem complexItem = (ComplexItem) item;
+			currentItem.add(new ComplexItem(complexItem.getName(), complexItem.getType(), complexItem.getImagePath(), complexItem.getMainItem(), complexItem.getSubItem(), complexItem.getNecessaryTool()));
+		} else {
+			currentItem.add(new Item(item.getName(), item.getType(), item.getImagePath()));
+		}
 	}
 
 	public List<Item> getCurrentItem() {
@@ -89,17 +97,12 @@ public class GameModel {
 		return bin.isCorrectItem(item);
 	}
 	
-	public void seperateItem(String[] itemNames, String[] itemTypes, String[] itemImagePaths) {
-		// 아이템을 해체하여 n개의 서로 다른 아이템으로 만드는 메소드
-		currentItem = new ArrayList<>();
-		for (int i=0; i<itemNames.length; i++) {
-			currentItem.add(new Item(itemNames[i], itemTypes[i], itemImagePaths[i]));
-		}
+	public boolean isCorrectTool(Tool tool, ComplexItem item) {
+		return tool.isCorrectItem(item);
 	}
 	
-	public void changeCurrentItem(String name, String type, String imagePath) {
+	public void changeCurrentItem(List<Item> items) {
 		// 현재 제공된 아이템 변경
-		currentItem = new ArrayList<>();
-		currentItem.add(new Item(name, type, imagePath));
+		currentItem = items;
 	}
 }

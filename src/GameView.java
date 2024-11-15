@@ -59,7 +59,6 @@ public class GameView extends JPanel {
 		int itemHeight = items.get(0).getHeight();
 		int spacing = 40;
 		
-		List<Bin> bins = gameModel.getBins();
 		int totalWidth = (itemWidth * items.size()) + (spacing * (items.size() - 1));
 
 		int startX = (panelWidth - totalWidth) / 2; // 중앙 정렬을 위한 X 좌표

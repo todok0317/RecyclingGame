@@ -58,15 +58,14 @@ public class LevelManager {
 		// 레벨3 데이터
 		List<Item> itemTemplates = new ArrayList<>();
 		itemTemplates.add(new Item("페트병", "페트", "images/petbottle.png"));
-		itemTemplates.add(new Item("라벨이 있는 페트병", "페트#cutter#종이", "images/petbottle#cutter#label.png"));
+		itemTemplates.add(new ComplexItem("라벨이 있는 페트병", "페트#cutter#비닐", "images/petbottle#cutter#label.png", new Item("페트병", "페트", "images/petbottle.png"), new Item("라벨", "비닐", "images/label.png"), "cutter"));
 		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
-		itemTemplates.add(new Item("종이", "종이", "images/paper.png"));
-		itemTemplates.add(new Item("음료수가 있는 페트병", "페트#sink#", "images/petbottle#sink#.png"));
+		itemTemplates.add(new ComplexItem("음료수가 있는 페트병", "페트#sink#", "images/petbottle#sink#.png", new Item("페트병", "페트", "images/petbottle.png"), "sink"));
 
 		List<Bin> bins = new ArrayList<>();
 		bins.add(new Bin("페트", "images/pet_bin.png"));
 		bins.add(new Bin("유리", "images/glass_bin.png"));
-		bins.add(new Bin("종이", "images/paper_bin.png"));
+		bins.add(new Bin("비닐", "images/vinyl_bin.png"));
 		
 		List<Tool> tools = new ArrayList<>();
 		tools.add(new Tool("cutter", "images/cutter.png"));

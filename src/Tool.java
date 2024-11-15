@@ -19,4 +19,9 @@ public class Tool extends JLabel {
 	public String getName() {
 		return name;
 	}
+	
+	public boolean isCorrectItem(ComplexItem item) {
+		// 올바른 도구를 사용했는지 리턴
+		return item.getNecessaryTool().equals(name);
+	}
 }

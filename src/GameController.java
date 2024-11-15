@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GameController implements MouseListener, MouseMotionListener {
 	// ***************************
@@ -90,6 +90,7 @@ public class GameController implements MouseListener, MouseMotionListener {
 			Point dropPoint = e.getPoint(); // 마우스를 뗀 좌표
 			sortWaste(dropPoint);
 			useTool(dropPoint);
+			
 			// 현재 아이템이 없다면 새 아이템 제공
 			if (gameModel.getCurrentItem().isEmpty()) {
 				gameModel.provideNewItem(); // 새 아이템 제공
@@ -116,28 +117,20 @@ public class GameController implements MouseListener, MouseMotionListener {
 
 	private void useTool(Point dropPoint) {
 		// 도구를 사용하여 아이템을 가공하는 메소드
-		if (gameModel.getTools() != null) {
+		// 두 가지 재질이 섞여 있는 아이템일 경우에만 실행
+		if (gameModel.getTools() != null && draggedItem instanceof ComplexItem) {
+			
 			// 마우스를 뗀 좌표에 위치한 도구를 알아냄
 			for (Tool tool : gameModel.getTools()) {
 				if (tool.getBounds().contains(dropPoint)) {
-					Pattern pattern = Pattern.compile("#" + tool.getName() + "#");
-					Matcher matcher = pattern.matcher(draggedItem.getType());
-
-					if (matcher.find()) {
-						String[] seperatedItemNames = draggedItem.getName().split("[이|가]\\s[있|뭍][는|은]\\s");
-						String[] seperatedItemTypes = draggedItem.getType().split("#" + tool.getName() + "#");
-						String[] seperatedItemImagePaths = draggedItem.getImagePath().split("#" + tool.getName() + "#");
-
-						gameView.remove(draggedItem);
-						if (seperatedItemTypes.length < 2) {
-							gameModel.changeCurrentItem(seperatedItemNames[1], seperatedItemTypes[0],
-									seperatedItemImagePaths[0] + seperatedItemImagePaths[1]);
-						} else {
-							seperatedItemImagePaths[0] += ".png";
-							seperatedItemImagePaths[1] = "images/" + seperatedItemImagePaths[1];
-							gameModel.seperateItem(seperatedItemNames, seperatedItemTypes, seperatedItemImagePaths);
-						}
+					ComplexItem draggedComplexItem = (ComplexItem) draggedItem;
+					
+					// 올바른 도구인지 확인하여 동작 수행
+					if (gameModel.isCorrectTool(tool, draggedComplexItem)) {
+						gameModel.changeCurrentItem(draggedComplexItem.seperateItem());
 					}
+					// 아이템 재배치
+					gameView.remove(draggedComplexItem);
 					gameView.displayNewItem();
 					break;
 				}
