@@ -23,6 +23,15 @@ public class GameController implements MouseListener, MouseMotionListener {
 		// gameView에 마우스리스너 부착
 		gameView.addMouseListener(this);
 		gameView.addMouseMotionListener(this);
+		gameView.levelSelectButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//gameFrame.showLevelSelectMenu();
+				endGame();
+			}
+			
+		});
 	}
 
 	public void startGame() {
@@ -42,8 +51,14 @@ public class GameController implements MouseListener, MouseMotionListener {
 	}
 
 	private void endGame() {
+		
 		// 게임 종료 메소드
 		gameTimer.stop();	// 타이머 중지
+		
+		// gameView에서 마우스리스너 제거 (제거 안 해주었더니 게임 재시작 횟수만큼 이벤트 중복 생성)
+		gameView.removeMouseListener(this);
+		gameView.removeMouseMotionListener(this);
+		
 		// 메시지 다이얼로그로 최종 점수 표시,
 		JOptionPane.showMessageDialog(gameView, "<html>게임 종료!<br>점수: " + gameModel.getScore() + "<br>분리수거에 대해 조금 더 공부합시다</html>", "알림", JOptionPane.INFORMATION_MESSAGE);
 		JPanel panel = new JPanel();
@@ -51,9 +66,7 @@ public class GameController implements MouseListener, MouseMotionListener {
 
 		gameFrame.showLevelSelectMenu();	// 레벨 선택 화면으로 돌아감
 		
-		// gameView에서 마우스리스너 제거 (제거 안 해주었더니 게임 재시작 횟수만큼 이벤트 중복 생성)
-		gameView.removeMouseListener(this);
-		gameView.removeMouseMotionListener(this);
+
 	}
 
 	@Override

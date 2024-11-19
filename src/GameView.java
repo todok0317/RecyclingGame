@@ -1,6 +1,11 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 public class GameView extends JPanel {
 	// ***************************
@@ -11,16 +16,42 @@ public class GameView extends JPanel {
 	// ***************************
 
 	private GameModel gameModel;
+	public JButton levelSelectButton;
 
-	public GameView(GameModel model) {
+	public GameView(GameModel model, ActionListener listener ) {
 		this.gameModel = model;
 		setLayout(null); // 절대 레이아웃으로 아이템 위치를 수동으로 설정
 		setBackground(StyleManager.backgroundColor);
+		
+		initializeLevelSelectButton(listener);
+		setComponentZOrder(levelSelectButton, 0); // 버튼을 최상위로 설정
+	    revalidate();
+	    repaint();
+	    
+	}
+	
+	private void initializeLevelSelectButton(ActionListener listener) {
+		levelSelectButton = new JButton("Back");
+		
+		int buttonWidth = 100;
+	    int buttonHeight = 40;
+	    
+	    int buttonX = 30;
+		int buttonY = 30;  
+		
+	   // int buttonX = getWidth() / 5; //비
+	   // int buttonY = getHeight() / 5;
+	    
+	    levelSelectButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
+		
+		//levelSelectButton.addActionListener(listener);
+		
+		//add(levelSelectButton);
 	}
 	
 	public void resetView() {
 		removeAll(); // 컴포넌트 모두 제거 (아이템, 분리수거 통들)
-		
+		add(levelSelectButton);
 		displayBins();	// 분리수거 통 배치
 		displayNewItem();	// 아이템 배치
 	}
@@ -37,7 +68,7 @@ public class GameView extends JPanel {
 		int totalWidth = (binWidth * bins.size()) + (spacing * (bins.size() - 1));
 
 		int startX = (panelWidth - totalWidth) / 2; // 중앙 정렬을 위한 시작 X 좌표
-		int yPosition = 20; // 화면 상단에서 20px 아래
+		int yPosition = 150; // 화면 상단에서 20px 아래
 
 		for (int i = 0; i < bins.size(); i++) {
 			bins.get(i).setBounds(startX + i * (binWidth + spacing), yPosition, binWidth, binHeight);
@@ -78,7 +109,7 @@ public class GameView extends JPanel {
 
 		// 타이머 및 점수 표시
 		g.setFont(new Font("Arial", Font.BOLD, 24));
-		g.drawString("time left: " + gameModel.getTimeLeft(), 900, 600);
-		g.drawString("score: " + gameModel.getScore(), 900, 650);
+		g.drawString("time left: " + gameModel.getTimeLeft(), 650, 100);
+		g.drawString("score: " + gameModel.getScore(), 200, 650);
 	}
 }
