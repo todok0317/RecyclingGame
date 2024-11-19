@@ -46,6 +46,12 @@ public class GameController implements MouseListener, MouseMotionListener {
 	private void endGame() {
 		// 게임 종료 메소드
 		gameTimer.stop(); // 타이머 중지
+		
+		// 최고 점수라면 최고 점수 정보를 업데이트 하고 알려줌
+		boolean isHighScore = gameModel.updateHighScore();
+		if (isHighScore) {
+			JOptionPane.showMessageDialog(gameView, "최고 점수를 갱신했습니다.");
+		}
 		// 메시지 다이얼로그로 최종 점수 표시,
 		JOptionPane.showMessageDialog(gameView,
 				"<html>게임 종료!<br>점수: " + gameModel.getScore() + "<br>분리수거에 대해 조금 더 공부합시다</html>", "알림",

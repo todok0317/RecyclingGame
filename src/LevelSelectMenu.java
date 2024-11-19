@@ -50,7 +50,7 @@ public class LevelSelectMenu extends JPanel {
 		// 레벨 선택 버튼 정의
 		public LevelButton(int level) {
 			setText("Level " + level);
-			setActionCommand("level" + level);
+			setActionCommand(Integer.toString(level));
 			
 			setFont(StyleManager.buttonFont);
 			setBackground(StyleManager.buttonColor);

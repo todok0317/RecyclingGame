@@ -12,11 +12,11 @@ public class LevelManager {
 		// 레벨을 받아 해당 레벨에 필요한 데이터 제공
 		// 레벨이 추가되면 이곳에 case 문으로 추가
 		switch (level) {
-		case "level1":
+		case "1":
 			return createDataLevel1();
-		case "level2":
+		case "2":
 			return createDataLevel2();
-		case "level3":
+		case "3":
 			return createDataLevel3();
 		}
 		return null;
@@ -34,7 +34,7 @@ public class LevelManager {
 		bins.add(new Bin("유리", "images/glass_bin.png"));
 		bins.add(new Bin("종이", "images/paper_bin.png"));
 
-		return new LevelData(itemTemplates, bins);
+		return new LevelData(1, itemTemplates, bins);
 	}
 
 	private LevelData createDataLevel2() {
@@ -51,7 +51,7 @@ public class LevelManager {
 		bins.add(new Bin("종이", "images/paper_bin.png"));
 		bins.add(new Bin("일반", "images/regular_bin.png"));
 
-		return new LevelData(itemTemplates, bins);
+		return new LevelData(2, itemTemplates, bins);
 	}
 	
 	private LevelData createDataLevel3() {
@@ -71,6 +71,6 @@ public class LevelManager {
 		tools.add(new Tool("cutter", "images/cutter.png"));
 		tools.add(new Tool("sink", "images/sink.png"));
 
-		return new LevelData(itemTemplates, bins, tools);
+		return new LevelData(3, itemTemplates, bins, tools);
 	}
 }

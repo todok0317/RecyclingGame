@@ -16,8 +16,11 @@ public class GameModel {
 	private int score; // 점수
 	private int timeLeft; // 남은 시간
 	private Random random;
+	private int level;
+	private ScoreManager scoreManager;
 
-	public GameModel() {
+	public GameModel(ScoreManager scoreManager) {
+		this.scoreManager = scoreManager;
 	}
 
 	public void resetStates() {
@@ -37,6 +40,7 @@ public class GameModel {
 			this.tools = new ArrayList<>(levelData.getTools());
 		else
 			this.tools = null;
+		this.level = levelData.getLevel();
 	}
 
 	public void provideNewItem() {
@@ -74,6 +78,10 @@ public class GameModel {
 	public int getTimeLeft() {
 		return timeLeft;
 	}
+	
+	public int getLevel() {
+		return level;
+	}
 
 	public void updateScore(boolean isCorrect) {
 		// 점수를 업데이트하는 메소드
@@ -105,4 +113,10 @@ public class GameModel {
 		// 현재 제공된 아이템 변경
 		currentItem = items;
 	}
+	
+	// 최고 점수 갱신 및 갱신 여부 반환
+	public boolean updateHighScore() {
+		return scoreManager.updateHighScore(level, score);
+	}
+	
 }
