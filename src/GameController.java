@@ -23,15 +23,7 @@ public class GameController implements MouseListener, MouseMotionListener {
 		// gameView에 마우스리스너 부착
 		gameView.addMouseListener(this);
 		gameView.addMouseMotionListener(this);
-		gameView.levelSelectButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//gameFrame.showLevelSelectMenu();
-				endGame();
-			}
-			
-		});
+		gameView.levelSelectButton.addActionListener(e -> stopGame());
 	}
 
 	public void startGame() {
@@ -51,7 +43,6 @@ public class GameController implements MouseListener, MouseMotionListener {
 	}
 
 	private void endGame() {
-		
 		// 게임 종료 메소드
 		gameTimer.stop();	// 타이머 중지
 		
@@ -65,8 +56,17 @@ public class GameController implements MouseListener, MouseMotionListener {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // 수직으로 컴포넌트를 배치
 
 		gameFrame.showLevelSelectMenu();	// 레벨 선택 화면으로 돌아감
+	}
+	
+	// 게임 중지 메소드
+	private void stopGame() {
+		gameTimer.stop();	// 타이머 중지
 		
-
+		// gameView에서 마우스리스너 제거 (제거 안 해주었더니 게임 재시작 횟수만큼 이벤트 중복 생성)
+		gameView.removeMouseListener(this);
+		gameView.removeMouseMotionListener(this);
+		
+		gameFrame.showLevelSelectMenu();	// 레벨 선택 화면으로 돌아감
 	}
 
 	@Override

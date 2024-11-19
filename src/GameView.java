@@ -23,14 +23,14 @@ public class GameView extends JPanel {
 		setLayout(null); // 절대 레이아웃으로 아이템 위치를 수동으로 설정
 		setBackground(StyleManager.backgroundColor);
 		
-		initializeLevelSelectButton(listener);
+		initializeLevelSelectButton();
 		setComponentZOrder(levelSelectButton, 0); // 버튼을 최상위로 설정
 	    revalidate();
 	    repaint();
 	    
 	}
 	
-	private void initializeLevelSelectButton(ActionListener listener) {
+	private void initializeLevelSelectButton() {
 		levelSelectButton = new JButton("Back");
 		
 		int buttonWidth = 100;
@@ -38,15 +38,8 @@ public class GameView extends JPanel {
 	    
 	    int buttonX = 30;
 		int buttonY = 30;  
-		
-	   // int buttonX = getWidth() / 5; //비
-	   // int buttonY = getHeight() / 5;
 	    
 	    levelSelectButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
-		
-		//levelSelectButton.addActionListener(listener);
-		
-		//add(levelSelectButton);
 	}
 	
 	public void resetView() {
