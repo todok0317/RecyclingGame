@@ -8,7 +8,6 @@ public class GameFrame extends JFrame {
 	// 게임의 각 화면에 해당하는 JPanel들을 통합하고 CardLayout을 이용하여 화면 전환을 관리
 	// ***************************
 
-	private JPanel mainPanel;
 	private CardLayout cardLayout;
 	private GameModel gameModel;
 	private GameView gameView;
@@ -24,7 +23,7 @@ public class GameFrame extends JFrame {
 		setLayout(cardLayout);
 
 		gameModel = new GameModel();
-		gameView = new GameView(gameModel, e -> showLevelSelectMenu());
+		gameView = new GameView(gameModel);
 		levelManager = new LevelManager();
 		tutorialDialogManager = new TutorialDialogManager(this); // 생성자에서 초기화
 

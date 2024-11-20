@@ -53,18 +53,18 @@ public class GameController implements MouseListener, MouseMotionListener {
 	private void endGame() {
 		// 게임 종료 메소드
 		stopGame(); // 게임 중지
-		
-		// 게임이 종료된 시점에 FeedbackDialog로 최종 점수와 잘못된 항목을 출력
-	    FeedbackDialog feedbackDialog = new FeedbackDialog(gameFrame, gameModel.getScore(), incorrectItems);
-	    feedbackDialog.setVisible(true);
 
-	    gameFrame.showLevelSelectMenu();
-  }
-	
+		// 게임이 종료된 시점에 FeedbackDialog로 최종 점수와 잘못된 항목을 출력
+		FeedbackDialog feedbackDialog = new FeedbackDialog(gameFrame, gameModel.getScore(), incorrectItems);
+		feedbackDialog.setVisible(true);
+
+		gameFrame.showLevelSelectMenu();
+	}
+
 	// 게임 중지 메소드
 	private void stopGame() {
 		gameTimer.stop(); // 타이머 중지
-		
+
 		// gameView에서 마우스리스너 제거 (제거 안 해주었더니 게임 재시작 횟수만큼 이벤트 중복 생성)
 		gameView.removeMouseListener(this);
 		gameView.removeMouseMotionListener(this);
@@ -80,7 +80,7 @@ public class GameController implements MouseListener, MouseMotionListener {
 			draggedItem = currentItem;
 		}
 	}
-	
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// 마우스를 누른 후 드래그 시
@@ -93,46 +93,33 @@ public class GameController implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-	    // 마우스를 뗄 시
-	    if (draggedItem != null) {
-	        Point dropPoint = e.getPoint(); // 마우스를 뗀 좌표
-	        // 마우스를 뗀 좌표에 위치한 분리수거 통을 알아냄
-	        for (Bin bin : gameModel.getBins()) {
-	            if (bin.getBounds().contains(dropPoint)) {
-	                // 올바른 분리수거인지 알아냄
-	                boolean isCorrect = gameModel.isCorrectBin(bin);
+		// 마우스를 뗄 시
+		if (draggedItem != null) {
+			Point dropPoint = e.getPoint(); // 마우스를 뗀 좌표
+			// 마우스를 뗀 좌표에 위치한 분리수거 통을 알아냄
+			for (Bin bin : gameModel.getBins()) {
+				if (bin.getBounds().contains(dropPoint)) {
+					// 올바른 분리수거인지 알아냄
+					boolean isCorrect = gameModel.isCorrectBin(bin);
 
-	                if (isCorrect) {
-	                    gameModel.updateScore(true); // 점수 업데이트
-	                    gameView.removeItem(); // 기존 아이템 제거
-	                    gameModel.provideNewItem(); // 새 아이템 제공
-	                    gameView.displayNewItem(); // 새 아이템 배치
-	                } else {
-	                    // 실패한 항목 리스트에 추가
-	                    incorrectItems.add(draggedItem);
-	                    gameModel.updateScore(false);
+					gameModel.updateScore(isCorrect); // 점수 업데이트
 
-	                    // X 표시를 드롭 위치에 표시
-	                    gameView.showIncorrectMark(dropPoint);
+					if (!isCorrect) {
+						// 실패한 항목 리스트에 추가
+						incorrectItems.add(draggedItem);
+						// X 표시를 드롭 위치에 표시
+						gameView.showIncorrectMark(dropPoint);
+					}
 
-	                    // 타이머를 사용하여 X 표시를 보여준 후 새 아이템 제공
-	                    Timer timer = new Timer(300, new ActionListener() {
-	                        @Override
-	                        public void actionPerformed(ActionEvent event) {
-	                            gameView.removeItem(); // 기존 아이템 제거
-	                            gameModel.provideNewItem(); // 새 아이템 제공
-	                            gameView.displayNewItem(); // 새 아이템 배치
-	                        }
-	                    });
-	                    timer.setRepeats(false); // 타이머를 한 번만 실행
-	                    timer.start();
-	                }
+					gameView.removeItem(); // 기존 아이템 제거
+					gameModel.provideNewItem(); // 새 아이템 제공
+					gameView.displayNewItem(); // 새 아이템 배치
 
-	                break;
-	            }
-	        }
-	        draggedItem = null;
-	    }
+					break;
+				}
+			}
+			draggedItem = null;
+		}
 	}
 
 	@Override
