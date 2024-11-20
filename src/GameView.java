@@ -22,7 +22,7 @@ public class GameView extends JPanel {
 		this.gameModel = model;
 		setLayout(null); // 절대 레이아웃으로 아이템 위치를 수동으로 설정
 		setBackground(StyleManager.backgroundColor);
-		
+
 		initializeLevelSelectButton();
 		setComponentZOrder(levelSelectButton, 0); // 버튼을 최상위로 설정
 	    revalidate();
@@ -44,7 +44,9 @@ public class GameView extends JPanel {
 	
 	public void resetView() {
 		removeAll(); // 컴포넌트 모두 제거 (아이템, 분리수거 통들)
+
 		add(levelSelectButton);
+
 		displayBins();	// 분리수거 통 배치
 		displayNewItem();	// 아이템 배치
 	}

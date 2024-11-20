@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameController implements MouseListener, MouseMotionListener {
 	// ***************************
@@ -14,11 +16,15 @@ public class GameController implements MouseListener, MouseMotionListener {
 	private GameFrame gameFrame;
 	private Timer gameTimer;
 	private Item draggedItem;	// 드래그된 아이템 (드래그 할 수 있게 설정된 아이템)
+	private LevelManager levelManager;
+	private TutorialDialogManager tutorialDialogManager;
 
-	public GameController(GameModel model, GameView view, GameFrame gameFrame) {
-		this.gameModel = model;
-		this.gameView = view;
-		this.gameFrame = gameFrame;
+	 public GameController(GameModel model, GameView view, GameFrame gameFrame, LevelManager levelManager) {
+	        this.gameModel = model;
+	        this.gameView = view;
+	        this.gameFrame = gameFrame;
+	        this.levelManager = levelManager;
+	        this.tutorialDialogManager = new TutorialDialogManager(gameFrame, gameView); // 생성자에서 초기화
 
 		// gameView에 마우스리스너 부착
 		gameView.addMouseListener(this);
@@ -68,6 +74,24 @@ public class GameController implements MouseListener, MouseMotionListener {
 		
 		gameFrame.showLevelSelectMenu();	// 레벨 선택 화면으로 돌아감
 	}
+	
+	
+	public void showStartDialog(String level) {
+	    // 선택한 레벨에 따라 LevelData 
+	    LevelData levelData = levelManager.getLevelData(level);
+	    //예외 처리 
+	    if (levelData == null || levelData.getItemTemplates().isEmpty()) {
+	        System.out.println("선택한 레벨에 대한 사진이 없습니다.");
+	        return;
+	    }
+
+	    // 튜토리얼 다이얼로그 처리를 다른데서 처리 
+	    tutorialDialogManager.showItemDialogs(levelData, 0, level);
+	    //모든 튜토리얼 본 뒤 게임 스타트 메서드
+	    startGame();
+	}
+
+	
 
 	@Override
 	public void mousePressed(MouseEvent e) {

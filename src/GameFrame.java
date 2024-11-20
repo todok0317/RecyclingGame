@@ -8,6 +8,7 @@ public class GameFrame extends JFrame {
 	// 게임의 각 화면에 해당하는 JPanel들을 통합하고 CardLayout을 이용하여 화면 전환을 관리
 	// ***************************
 
+	private JPanel mainPanel;
 	private CardLayout cardLayout;
 	private GameModel gameModel;
 	private GameView gameView;
@@ -25,14 +26,16 @@ public class GameFrame extends JFrame {
 		gameView = new GameView(gameModel, e -> showLevelSelectMenu());
 		levelManager = new LevelManager();
 
+		
 		// showLevelSelectMenu 메소드를 호출하는 리스너를 메인 메뉴에 전달
 		mainMenu = new MainMenu(e -> showLevelSelectMenu());
+		
 		// startGameWithLevel 메소드를 호출하는 리스너를 레벨 선택 메뉴에 전달
 		levelSelectMenu = new LevelSelectMenu(e -> startGameWithLevel(e.getActionCommand()));
 		
-		
-		
-
+		// 이전 버튼 클릭 시 메인 메뉴로 돌아가는 리스너 추가(지후)
+        levelSelectMenu.setBackButtonListener(e -> showMainMenu());
+        
 		add(mainMenu, "MainMenu"); // 메인메뉴 화면
 		add(levelSelectMenu, "LevelSelect"); // 레벨 선택 화면
 		add(gameView, "Game"); // 게임 화면
@@ -49,6 +52,11 @@ public class GameFrame extends JFrame {
 		// 레벨 선택 화면으로 전환
 		cardLayout.show(getContentPane(), "LevelSelect");
 	}
+	
+	   private void showMainMenu() {
+	        // 메인 메뉴 화면으로 전환
+	        cardLayout.show(getContentPane(), "MainMenu");
+	    }
 
 	private void startGameWithLevel(String level) {
 		// 게임 시작 메소드, 선택한 레벨에 맞는 데이터를 불러와 게임을 시작
@@ -57,6 +65,12 @@ public class GameFrame extends JFrame {
 		
 		cardLayout.show(getContentPane(), "Game"); // 게임 화면으로 전환
 		
-		new GameController(gameModel, gameView, this).startGame(); // 컨트롤러 생성 및 게임 시작
+		LevelManager levelManager = new LevelManager(); // LevelManager 인스턴스 생성
+
+		// 선택한 레벨을 기반으로 게임 시작을 위한 다이얼로그 호출
+        GameController gameController = new GameController(gameModel, gameView, this, levelManager);
+        gameController.showStartDialog(level); // 선택된 레벨 전달
+
+
 	}
 }

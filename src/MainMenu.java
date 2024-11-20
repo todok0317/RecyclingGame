@@ -32,7 +32,7 @@ public class MainMenu extends JPanel {
 		subtitle.setAlignmentX(Component.CENTER_ALIGNMENT); // X축으로 중앙 정렬
 		add(subtitle); // 부제목 추가
 		add(Box.createVerticalStrut(20)); // 제목, 버튼 사이 간격 추가
-
+ 
 		JButton startButton = new JButton("Game Start");
 		startButton.setFont(StyleManager.buttonFont);
 		startButton.setPreferredSize(new Dimension(150, 50)); // 기본 크기 설정

@@ -10,14 +10,29 @@ public class LevelSelectMenu extends JPanel {
 	// ***************************
 	
 	ActionListener levelSelectListener;
+	ActionListener backButtonListener; //이전버튼 리스너
+	JButton backButton = new JButton("이전");  //이전 버튼
 
 	public LevelSelectMenu(ActionListener levelSelectListener) {
 		this.levelSelectListener = levelSelectListener;
 		
+		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // 세로 방향으로 정렬
-		JButton backButton = new JButton("이전");
-
-		add(Box.createVerticalStrut(100));
+		
+		JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		backButtonPanel.setOpaque(false); // 배경색이 투명하도록 설정
+		// "이전" 버튼 추가
+        backButton.setFont(StyleManager.buttonFont);
+        backButton.setPreferredSize(new Dimension(110, 50)); // 버튼 크기 설정
+        backButton.setFocusPainted(false);
+        backButton.setOpaque(true);
+        backButton.setBackground(StyleManager.buttonColor);
+        
+        // backButton을 backButtonPanel에 추가하고, 그 패널을 상단에 추가
+        backButtonPanel.add(backButton);
+        add(backButtonPanel);
+        add(Box.createVerticalStrut(5)); //5 간격
+	
 		JLabel title = new JLabel("레벨은 총 두개로 구성되어 있어요.", SwingConstants.CENTER);
 		title.setFont(StyleManager.fontLargeBold);
 		title.setAlignmentX(Component.CENTER_ALIGNMENT); // X축으로 중앙 정렬
@@ -39,10 +54,11 @@ public class LevelSelectMenu extends JPanel {
 		add(Box.createVerticalStrut(200));
 		buttonPanel.add(level2Button);
 		add(buttonPanel);
-
+		
 		setBackground(StyleManager.backgroundColor);
 
 	}
+	
 	
 	class LevelButton extends JButton {
 		// 레벨 선택 버튼 정의
@@ -56,5 +72,11 @@ public class LevelSelectMenu extends JPanel {
 			
 			addActionListener(levelSelectListener);
 		}
+	}
+
+	 // "이전" 버튼에 대한 리스너 메소드 추가
+	public void setBackButtonListener(ActionListener listener) {
+		this.backButtonListener = listener;
+		backButton.addActionListener(listener);
 	}
 }

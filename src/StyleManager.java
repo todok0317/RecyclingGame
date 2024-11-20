@@ -9,6 +9,7 @@ public class StyleManager {
 	// ***************************
 	
 	public static Color backgroundColor = new Color(228, 216, 216);
+	public static Color tutorialBackgroudColor = new Color(189, 182, 182);
 	
 	public static Color buttonColor = new Color(203, 126, 126);
 	public static Font buttonFont = new Font("한컴 말랑말랑 Bold", Font.PLAIN, 24);
