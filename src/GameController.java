@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class GameController implements MouseListener, MouseMotionListener {
@@ -34,8 +33,8 @@ public class GameController implements MouseListener, MouseMotionListener {
 		});
 	}
 
+	// 게임을 시작하는 메소드
 	public void startGame() {
-		// 게임을 시작하는 메소드
 		gameModel.provideNewItem(); // 첫 아이템 제공
 		gameView.resetView(); // 게임 화면 초기화
 		incorrectItems.clear();
@@ -52,17 +51,14 @@ public class GameController implements MouseListener, MouseMotionListener {
 		gameTimer.start(); // 타이머 시작
 	}
 
+	// 게임 종료 메소드
 	private void endGame() {
-		// 게임 종료 메소드
 		stopGame(); // 게임 중지	
 		// 최고 점수라면 최고 점수 정보를 업데이트 하고 알려줌
 		boolean isHighScore = gameModel.updateHighScore();
-		if (isHighScore) {
-			JOptionPane.showMessageDialog(gameView, "최고 점수를 갱신했습니다.");
-		}
 
 		// 게임이 종료된 시점에 FeedbackDialog로 최종 점수와 잘못된 항목을 출력
-		FeedbackDialog feedbackDialog = new FeedbackDialog(gameFrame, gameModel.getScore(), incorrectItems);
+		FeedbackDialog feedbackDialog = new FeedbackDialog(gameFrame, gameModel.getScore(), isHighScore, incorrectItems);
 		feedbackDialog.setVisible(true);
 
 		gameFrame.showLevelSelectMenu();
@@ -71,16 +67,15 @@ public class GameController implements MouseListener, MouseMotionListener {
 	// 게임 중지 메소드
 	private void stopGame() {
 		gameTimer.stop(); // 타이머 중지
-		gameFrame.showLevelSelectMenu(); // 레벨 선택 화면으로 돌아감
 
 		// gameView에서 마우스리스너 제거 (제거 안 해주었더니 게임 재시작 횟수만큼 이벤트 중복 생성)
 		gameView.removeMouseListener(this);
 		gameView.removeMouseMotionListener(this);
 	}
 
+	// 마우스를 누를 시
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// 마우스를 누를 시
 		Point clickPoint = e.getPoint(); // 마우스를 누른 좌표
 		
 		// 누른 좌표가 현재 제공된 아이템 위라면 아이템을 드래그할 수 있게 설정
@@ -92,9 +87,9 @@ public class GameController implements MouseListener, MouseMotionListener {
 		}
 	}
 
+	// 마우스를 누른 후 드래그 시
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// 마우스를 누른 후 드래그 시
 		// 누른 아이템도 드래그
 		if (draggedItem != null) {
 			draggedItem.setLocation(e.getX() - draggedItem.getWidth() / 2, e.getY() - draggedItem.getHeight() / 2);
@@ -102,9 +97,9 @@ public class GameController implements MouseListener, MouseMotionListener {
 		}
 	}
 
+	// 마우스를 뗄 시
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// 마우스를 뗄 시
 		if (draggedItem != null) {
 			Point dropPoint = e.getPoint(); // 마우스를 뗀 좌표
 
@@ -120,8 +115,8 @@ public class GameController implements MouseListener, MouseMotionListener {
 		}
 	}
 
+	// 분리수거를 수행하는 메소드
 	private void sortWaste(Point dropPoint) {
-		// 분리수거를 수행하는 메소드
 		// 마우스를 뗀 좌표에 위치한 분리수거 통을 알아냄
 		for (Bin bin : gameModel.getBins()) {
 			if (bin.getBounds().contains(dropPoint)) {
@@ -143,8 +138,8 @@ public class GameController implements MouseListener, MouseMotionListener {
 		}
 	}
 
+	// 도구를 사용하여 아이템을 가공하는 메소드
 	private void useTool(Point dropPoint) {
-		// 도구를 사용하여 아이템을 가공하는 메소드
 		// 두 가지 재질이 섞여 있는 아이템일 경우에만 실행
 		if (gameModel.getTools() != null && draggedItem instanceof ComplexItem) {
 			

@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,7 @@ public class FeedbackDialog extends JDialog {
 	// JDialog를 상속 받아 구현
 	// ***************************
 
-	public FeedbackDialog(JFrame parent, int finalScore, List<Item> incorrectItems) {
+	public FeedbackDialog(JFrame parent, int finalScore, boolean isHighScore, List<Item> incorrectItems) {
 		super(parent, "게임 종료 - 피드백", true);
 
 		// incorrectItems를 Set으로 설정해 중복 아이템 제거
@@ -33,7 +32,17 @@ public class FeedbackDialog extends JDialog {
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		contentPanel.add(scoreLabel);
-		contentPanel.add(Box.createVerticalStrut(10)); // 점수와 피드백 간격
+		
+		// 최고 점수를 갱신했다면 알림 표시
+		if (isHighScore) {
+			JLabel highScoreLabel = new JLabel("축하합니다! 최고 점수를 갱신했습니다!");
+			highScoreLabel.setFont(StyleManager.fontMidiumBold);
+			highScoreLabel.setForeground(Color.RED);
+			highScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			contentPanel.add(highScoreLabel);
+		}
+		
+		contentPanel.add(Box.createVerticalStrut(10)); // 점수와 피드백 간격		
 
 		if (!incorrectItemSet.isEmpty()) {
 			JLabel feedbackLabel = new JLabel("올바른 분리 수거 방법을 알아보아요! ");

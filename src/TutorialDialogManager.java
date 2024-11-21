@@ -120,11 +120,11 @@ public class TutorialDialogManager {
 		binMap.put("일반", "일반 쓰레기통");
 
 		switch (level) {
-		case "level1":
+		case "1":
 			return item.getName() + "은 " + binMap.getOrDefault(item.getType(), "알 수 없는 통") + "에 넣어주세요!";
-		case "level2":
+		case "2":
 			return item.getName() + "은 " + binMap.getOrDefault(item.getType(), "알 수 없는 통") + "에 넣어주세요!";
-		case "level3":
+		case "3":
 			return "정확하게 " + item.getName() + "을(를) 올바른 통에 분리수거 해주세요!";
 		default:
 			return "올바르게 분리수거 해주세요!";
@@ -137,17 +137,17 @@ public class TutorialDialogManager {
 		String dialogMessage = "";
 
 		switch (level) {
-		case "level1":
+		case "1":
 			title = "LEVEL 1";
 			dialogMessage = "환영합니다, 분리배출 히어로!\r\n"
 					+ "첫 번째 임무는 기본 분리배출입니다.\r\n 유리병, 음료수캔, 참치캔, 플라스틱 용기를\r\n 올바른 분리배출함에 넣어보세요!";
 			break;
-		case "level2":
+		case "2":
 			title = "LEVEL 2";
 			dialogMessage = "잘하고 있어요! 이제 분리배출의 달인으로 한 단계 더 나아가 볼까요?\r\n"
 					+ "이번 레벨에서는 PET와 종량제봉투가 추가됩니다.\r\n 새로운 아이템을 제대로 배출해 보세요!";
 			break;
-		case "level3":
+		case "3":
 			title = "LEVEL 3";
 			dialogMessage = "당신은 이제 분리배출 마스터가 될 준비가 되었습니다!\r\n" + "커터칼과 싱크대를 이용해\r\n 더 복잡한 분리배출을 완수해야 합니다. 도전하세요!";
 			break;

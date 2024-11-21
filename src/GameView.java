@@ -34,6 +34,7 @@ public class GameView extends JPanel {
 
 	}
 
+	// 레벨 선택 화면으로 돌아가는 버튼 생성
 	private void initializeLevelSelectButton() {
 		levelSelectButton = new JButton("Back");
 
@@ -46,6 +47,7 @@ public class GameView extends JPanel {
 		levelSelectButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
 	}
 
+	// 게임 화면 초기화
 	public void resetView() {
 		removeAll(); // 컴포넌트 모두 제거 (아이템, 분리수거 통들)
 
@@ -63,6 +65,7 @@ public class GameView extends JPanel {
 		return new ImageIcon(img);
 	}
 
+	// X 이미지 표시
 	public void showIncorrectMark(Point location) {
 		// 기존 타이머가 실행 중이면 중단
 		if (clearMarkTimer != null && clearMarkTimer.isRunning()) {
@@ -83,8 +86,8 @@ public class GameView extends JPanel {
 		clearMarkTimer.start();
 	}
 
+	// 분리수거 통들을 배치하는 메소드
 	private void displayBins() {
-		// 분리수거 통들을 배치하는 메소드
 		// 중앙 상단에 나란히 배치
 		int panelWidth = getWidth();
 		int binWidth = gameModel.getBins().get(0).getWidth();
@@ -102,8 +105,8 @@ public class GameView extends JPanel {
 		}
 	}
 
+	// 새 아이템을 배치하는 메소드
 	public void displayNewItem() {
-		// 새 아이템을 배치하는 메소드
 		// 새 아이템을 추가
 		// 아이템이 분리되어 현재 아이템이 여러개라면 전부 배치
 		List<Item> items = gameModel.getCurrentItem();
@@ -127,8 +130,8 @@ public class GameView extends JPanel {
 		repaint(); // 화면 업데이트
 	}
 	
+	// 도구들을 배치하는 메소드
 	private void displayTools() {
-		// 도구들을 배치하는 메소드
 		// 우측 중앙에 세로로 배치
 		if (gameModel.getTools() != null) {
 			int panelHeight = getHeight();

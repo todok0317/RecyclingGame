@@ -49,13 +49,13 @@ public class GameFrame extends JFrame {
 
 	}
 
+	// 레벨 선택 화면으로 전환
 	public void showLevelSelectMenu() {
-		// 레벨 선택 화면으로 전환
 		cardLayout.show(getContentPane(), "LevelSelect");
 	}
 
+	// 메인 메뉴 화면으로 전환
 	private void showMainMenu() {
-		// 메인 메뉴 화면으로 전환
 		cardLayout.show(getContentPane(), "MainMenu");
 	}
 
@@ -73,10 +73,9 @@ public class GameFrame extends JFrame {
 		tutorialDialogManager.showItemDialogs(levelData, 0, level);
 	}
 
+	// 게임 시작 메소드, 선택한 레벨에 맞는 데이터를 불러와 게임을 시작
 	private void startGameWithLevel(String level) {
-		// 게임 시작 메소드, 선택한 레벨에 맞는 데이터를 불러와 게임을 시작
 		// 해금된 레벨만 플레이 가능
-		System.out.println(scoreManager.getUnlockedLevel());
 		if (Integer.parseInt(level) > scoreManager.getUnlockedLevel()) {
 			JOptionPane.showMessageDialog(levelSelectMenu, "아직 플레이할 수 없습니다");
 		} else {
