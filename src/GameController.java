@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GameController implements MouseListener, MouseMotionListener {
@@ -41,10 +42,11 @@ public class GameController implements MouseListener, MouseMotionListener {
 
 		// 1초마다 시간을 감소시키고 남은 시간이 0이 되면 게임을 종료시키는 타이머 생성
 		gameTimer = new Timer(1000, e -> {
-			gameModel.decrementTime();
-			gameView.repaint();
+			gameModel.decrementTime(); // 시간 감소
+			gameView.repaint(); // 화면 다시 그리기
+			
 			if (gameModel.getTimeLeft() <= 0) {
-				endGame();
+				endGame(); // 게임 종료
 			}
 		});
 		gameTimer.start(); // 타이머 시작
@@ -52,7 +54,12 @@ public class GameController implements MouseListener, MouseMotionListener {
 
 	private void endGame() {
 		// 게임 종료 메소드
-		stopGame(); // 게임 중지
+		stopGame(); // 게임 중지	
+		// 최고 점수라면 최고 점수 정보를 업데이트 하고 알려줌
+		boolean isHighScore = gameModel.updateHighScore();
+		if (isHighScore) {
+			JOptionPane.showMessageDialog(gameView, "최고 점수를 갱신했습니다.");
+		}
 
 		// 게임이 종료된 시점에 FeedbackDialog로 최종 점수와 잘못된 항목을 출력
 		FeedbackDialog feedbackDialog = new FeedbackDialog(gameFrame, gameModel.getScore(), incorrectItems);
@@ -64,6 +71,7 @@ public class GameController implements MouseListener, MouseMotionListener {
 	// 게임 중지 메소드
 	private void stopGame() {
 		gameTimer.stop(); // 타이머 중지
+		gameFrame.showLevelSelectMenu(); // 레벨 선택 화면으로 돌아감
 
 		// gameView에서 마우스리스너 제거 (제거 안 해주었더니 게임 재시작 횟수만큼 이벤트 중복 생성)
 		gameView.removeMouseListener(this);
@@ -74,10 +82,13 @@ public class GameController implements MouseListener, MouseMotionListener {
 	public void mousePressed(MouseEvent e) {
 		// 마우스를 누를 시
 		Point clickPoint = e.getPoint(); // 마우스를 누른 좌표
-		Item currentItem = gameModel.getCurrentItem(); // 현재 제공된 아이템
+		
 		// 누른 좌표가 현재 제공된 아이템 위라면 아이템을 드래그할 수 있게 설정
-		if (currentItem != null && currentItem.getBounds().contains(clickPoint)) {
-			draggedItem = currentItem;
+		for (Item item : gameModel.getCurrentItem()) {
+			if (item.getBounds().contains(clickPoint)) {
+				draggedItem = item;
+				break;
+			}
 		}
 	}
 
@@ -96,29 +107,62 @@ public class GameController implements MouseListener, MouseMotionListener {
 		// 마우스를 뗄 시
 		if (draggedItem != null) {
 			Point dropPoint = e.getPoint(); // 마우스를 뗀 좌표
-			// 마우스를 뗀 좌표에 위치한 분리수거 통을 알아냄
-			for (Bin bin : gameModel.getBins()) {
-				if (bin.getBounds().contains(dropPoint)) {
-					// 올바른 분리수거인지 알아냄
-					boolean isCorrect = gameModel.isCorrectBin(bin);
 
-					gameModel.updateScore(isCorrect); // 점수 업데이트
+			sortWaste(dropPoint);
+			useTool(dropPoint);
+			
+			// 현재 아이템이 없다면 새 아이템 제공
+			if (gameModel.getCurrentItem().isEmpty()) {
+				gameModel.provideNewItem(); // 새 아이템 제공
+				gameView.displayNewItem(); // 새 아이템 배치
+			}
+			draggedItem = null;
+		}
+	}
 
-					if (!isCorrect) {
-						// 실패한 항목 리스트에 추가
-						incorrectItems.add(draggedItem);
-						// X 표시를 드롭 위치에 표시
-						gameView.showIncorrectMark(dropPoint);
+	private void sortWaste(Point dropPoint) {
+		// 분리수거를 수행하는 메소드
+		// 마우스를 뗀 좌표에 위치한 분리수거 통을 알아냄
+		for (Bin bin : gameModel.getBins()) {
+			if (bin.getBounds().contains(dropPoint)) {
+				// 올바른 분리수거인지 알아냄
+				boolean isCorrect = gameModel.isCorrectBin(bin, draggedItem);
+				gameModel.updateScore(isCorrect); // 점수 업데이트
+
+				if (!isCorrect) {
+					// 실패한 항목 리스트에 추가
+					incorrectItems.add(draggedItem);
+					// X 표시를 드롭 위치에 표시
+					gameView.showIncorrectMark(dropPoint);
+				}
+				
+				gameView.remove(draggedItem); // 드래그하고 있던 아이템 제거
+				gameModel.getCurrentItem().remove(draggedItem); // 드래그하고 있던 아이템 제거
+				break;
+			}
+		}
+	}
+
+	private void useTool(Point dropPoint) {
+		// 도구를 사용하여 아이템을 가공하는 메소드
+		// 두 가지 재질이 섞여 있는 아이템일 경우에만 실행
+		if (gameModel.getTools() != null && draggedItem instanceof ComplexItem) {
+			
+			// 마우스를 뗀 좌표에 위치한 도구를 알아냄
+			for (Tool tool : gameModel.getTools()) {
+				if (tool.getBounds().contains(dropPoint)) {
+					ComplexItem draggedComplexItem = (ComplexItem) draggedItem;
+					
+					// 올바른 도구인지 확인하여 동작 수행
+					if (gameModel.isCorrectTool(tool, draggedComplexItem)) {
+						gameModel.changeCurrentItem(draggedComplexItem.seperateItem());
 					}
-
-					gameView.removeItem(); // 기존 아이템 제거
-					gameModel.provideNewItem(); // 새 아이템 제공
-					gameView.displayNewItem(); // 새 아이템 배치
-
+					// 아이템 재배치
+					gameView.remove(draggedComplexItem);
+					gameView.displayNewItem();
 					break;
 				}
 			}
-			draggedItem = null;
 		}
 	}
 

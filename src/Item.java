@@ -16,7 +16,7 @@ public class Item extends JLabel {
 		this.name = name;
 		this.type = type;
 		this.imagePath = imagePath;
-  
+
 		// 이미지 아이콘을 설정하여 JLabel로 표시
 		setIcon(new ImageIcon(imagePath));
 		setSize(getPreferredSize()); // 이미지 크기로 사이즈 설정
@@ -35,7 +35,4 @@ public class Item extends JLabel {
 		return type;
 	}
 	
-	public String getImage() {
-        return imagePath;
-    }
 }

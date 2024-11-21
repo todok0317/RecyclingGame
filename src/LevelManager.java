@@ -12,10 +12,12 @@ public class LevelManager {
 		// 레벨을 받아 해당 레벨에 필요한 데이터 제공
 		// 레벨이 추가되면 이곳에 case 문으로 추가
 		switch (level) {
-		case "level1":
+		case "1":
 			return createDataLevel1();
-		case "level2":
+		case "2":
 			return createDataLevel2();
+		case "3":
+			return createDataLevel3();
 		}
 		return null;
 	}
@@ -32,7 +34,7 @@ public class LevelManager {
 		bins.add(new Bin("유리", "images/glass_bin.png"));
 		bins.add(new Bin("종이", "images/paper_bin.png"));
 
-		return new LevelData(itemTemplates, bins);
+		return new LevelData(1, itemTemplates, bins);
 	}
 
 	private LevelData createDataLevel2() {
@@ -49,6 +51,26 @@ public class LevelManager {
 		bins.add(new Bin("종이", "images/paper_bin.png"));
 		bins.add(new Bin("일반", "images/regular_bin.png"));
 
-		return new LevelData(itemTemplates, bins);
+		return new LevelData(2, itemTemplates, bins);
+	}
+	
+	private LevelData createDataLevel3() {
+		// 레벨3 데이터
+		List<Item> itemTemplates = new ArrayList<>();
+		itemTemplates.add(new Item("페트병", "페트", "images/petbottle.png"));
+		itemTemplates.add(new ComplexItem("라벨이 있는 페트병", "페트#cutter#비닐", "images/petbottle#cutter#label.png", new Item("페트병", "페트", "images/petbottle.png"), new Item("라벨", "비닐", "images/label.png"), "cutter"));
+		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
+		itemTemplates.add(new ComplexItem("음료수가 있는 페트병", "페트#sink#", "images/petbottle#sink#.png", new Item("페트병", "페트", "images/petbottle.png"), "sink"));
+
+		List<Bin> bins = new ArrayList<>();
+		bins.add(new Bin("페트", "images/pet_bin.png"));
+		bins.add(new Bin("유리", "images/glass_bin.png"));
+		bins.add(new Bin("비닐", "images/vinyl_bin.png"));
+		
+		List<Tool> tools = new ArrayList<>();
+		tools.add(new Tool("cutter", "images/cutter.png"));
+		tools.add(new Tool("sink", "images/sink.png"));
+
+		return new LevelData(3, itemTemplates, bins, tools);
 	}
 }

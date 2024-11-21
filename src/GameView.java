@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class GameView extends JPanel {
 	// ***************************
@@ -52,6 +53,7 @@ public class GameView extends JPanel {
 
 		displayBins(); // 분리수거 통 배치
 		displayNewItem(); // 아이템 배치
+		displayTools();	// 도구 배치
 		add(incorrectMarkLabel); // X 표시 JLabel 다시 추가
 	}
 
@@ -81,7 +83,9 @@ public class GameView extends JPanel {
 		clearMarkTimer.start();
 	}
 
-	public void displayBins() {
+	private void displayBins() {
+		// 분리수거 통들을 배치하는 메소드
+		// 중앙 상단에 나란히 배치
 		int panelWidth = getWidth();
 		int binWidth = gameModel.getBins().get(0).getWidth();
 		int binHeight = gameModel.getBins().get(0).getHeight();
@@ -98,25 +102,52 @@ public class GameView extends JPanel {
 		}
 	}
 
-	public void removeItem() {
-		remove(gameModel.getCurrentItem());
-	}
-
 	public void displayNewItem() {
-		Item newItem = gameModel.getCurrentItem();
-		add(newItem);
+		// 새 아이템을 배치하는 메소드
+		// 새 아이템을 추가
+		// 아이템이 분리되어 현재 아이템이 여러개라면 전부 배치
+		List<Item> items = gameModel.getCurrentItem();
 
 		int panelWidth = getWidth();
 		int panelHeight = getHeight();
-		int itemWidth = newItem.getWidth();
-		int itemHeight = newItem.getHeight();
+		int itemWidth = items.get(0).getWidth();
+		int itemHeight = items.get(0).getHeight();
+		int spacing = 40;
+		
+		int totalWidth = (itemWidth * items.size()) + (spacing * (items.size() - 1));
+		int startX = (panelWidth - totalWidth) / 2; // 중앙 정렬을 위한 X 좌표
+		int yPosition = panelHeight - itemHeight - 40; // 하단에서 20px 위로 위치
 
-		int xPosition = (panelWidth - itemWidth) / 2;
-		int yPosition = panelHeight - itemHeight - 40;
+		for (int i = 0; i < items.size(); i++) {
+			items.get(i).setBounds(startX + i * (itemWidth + spacing), yPosition, itemWidth, itemHeight);
+			add(items.get(i)); // 패널에 추가
+			setComponentZOrder(items.get(i), 0); // Item의 z-인덱스를 가장 위로 설정
+		}
 
-		newItem.setBounds(xPosition, yPosition, itemWidth, itemHeight);
-		setComponentZOrder(newItem, 0); // 아이템을 최상단으로 설정
-		repaint();
+		repaint(); // 화면 업데이트
+	}
+	
+	private void displayTools() {
+		// 도구들을 배치하는 메소드
+		// 우측 중앙에 세로로 배치
+		if (gameModel.getTools() != null) {
+			int panelHeight = getHeight();
+			int panelWidth = getWidth();
+			int toolWidth = gameModel.getBins().get(0).getWidth(); // 도구의 폭
+			int toolHeight = gameModel.getBins().get(0).getHeight();
+			int spacing = 10; // tool 간격
+	
+			List<Tool> tools = gameModel.getTools();
+			int totalHeight = (toolHeight * tools.size()) + (spacing * (tools.size() - 1));
+	
+			int startY = (panelHeight - totalHeight) / 2; // 중앙 정렬을 위한 시작 y 좌표
+			int xPosition = panelWidth - toolWidth;
+	
+			for (int i = 0; i < tools.size(); i++) {
+				tools.get(i).setBounds(xPosition, startY + i * (toolWidth + spacing), toolWidth, toolHeight);
+				add(tools.get(i)); // 패널에 추가
+			}
+		}
 	}
 
 	@Override

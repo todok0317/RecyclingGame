@@ -52,7 +52,7 @@ public class FeedbackDialog extends JDialog {
 
 				// 아이템 이미지
 				JLabel imageLabel = new JLabel();
-				imageLabel.setIcon(getResizedIcon(item.getImage(), 100, 100)); // 이미지 크기 고정
+				imageLabel.setIcon(getResizedIcon(item.getImagePath(), 100, 100)); // 이미지 크기 고정
 
 				// 아이템 설명
 				JLabel textLabel = new JLabel(item.getName() + " 용기는 " + item.getType() + " 수거함에 배출해야 합니다.");

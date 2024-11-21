@@ -15,14 +15,16 @@ public class GameFrame extends JFrame {
 	private LevelSelectMenu levelSelectMenu;
 	private LevelManager levelManager;
 	private TutorialDialogManager tutorialDialogManager;
+	private ScoreManager scoreManager;
 	private final int WIDTH = 1400;
 	private final int HEIGHT = 800;
 
 	public GameFrame() {
 		cardLayout = new CardLayout();
 		setLayout(cardLayout);
-
-		gameModel = new GameModel();
+		
+		scoreManager = new ScoreManager();
+		gameModel = new GameModel(scoreManager);
 		gameView = new GameView(gameModel);
 		levelManager = new LevelManager();
 		tutorialDialogManager = new TutorialDialogManager(this); // 생성자에서 초기화
@@ -73,14 +75,20 @@ public class GameFrame extends JFrame {
 
 	private void startGameWithLevel(String level) {
 		// 게임 시작 메소드, 선택한 레벨에 맞는 데이터를 불러와 게임을 시작
-		LevelData levelData = levelManager.getLevelData(level); // 레벨 데이터 받기
-		gameModel.setLevelData(levelData); // 해당 레벨로 게임 데이터 설정
+		// 해금된 레벨만 플레이 가능
+		System.out.println(scoreManager.getUnlockedLevel());
+		if (Integer.parseInt(level) > scoreManager.getUnlockedLevel()) {
+			JOptionPane.showMessageDialog(levelSelectMenu, "아직 플레이할 수 없습니다");
+		} else {
+			LevelData levelData = levelManager.getLevelData(level); // 레벨 데이터 받기
+			gameModel.setLevelData(levelData);	// 해당 레벨로 게임 데이터 설정
+			
+			cardLayout.show(getContentPane(), "Game"); // 게임 화면으로 전환
 
-		cardLayout.show(getContentPane(), "Game"); // 게임 화면으로 전환
-
-		showTutorialDialog(level); // 튜로리얼 표시
-
-		new GameController(gameModel, gameView, this).startGame(); // 게임 시작
+			showTutorialDialog(level); // 튜로리얼 표시
+			
+			new GameController(gameModel, gameView, this).startGame(); // 컨트롤러 생성 및 게임 시작
+		}
 	}
 
 }
