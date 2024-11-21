@@ -62,6 +62,7 @@ public class GameController implements MouseListener, MouseMotionListener {
 		feedbackDialog.setVisible(true);
 
 		gameFrame.showLevelSelectMenu();
+		gameView.removeAll();
 	}
 
 	// 게임 중지 메소드
