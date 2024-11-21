@@ -71,6 +71,7 @@ public class GameController implements MouseListener, MouseMotionListener {
 		// gameView에서 마우스리스너 제거 (제거 안 해주었더니 게임 재시작 횟수만큼 이벤트 중복 생성)
 		gameView.removeMouseListener(this);
 		gameView.removeMouseMotionListener(this);
+		gameView.removeAll();
 	}
 
 	// 마우스를 누를 시
