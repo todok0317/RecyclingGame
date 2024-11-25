@@ -63,8 +63,14 @@ public class FeedbackDialog extends JDialog {
 				JLabel imageLabel = new JLabel();
 				imageLabel.setIcon(getResizedIcon(item.getImagePath(), 100, 100)); // 이미지 크기 고정
 
+				// 잘못된 도구 사용 피드백 추가
+	            String feedbackText = item instanceof ComplexItem 
+	                    ? ((ComplexItem) item).getIncorrectToolFeedback() 
+	                    : item.getName() + " 용기는 " + item.getType() + " 수거함에 배출해야 합니다.";
+
+				
 				// 아이템 설명
-				JLabel textLabel = new JLabel(item.getName() + " 용기는 " + item.getType() + " 수거함에 배출해야 합니다.");
+	            JLabel textLabel = new JLabel(feedbackText);
 				textLabel.setFont(StyleManager.fontSmallRegular);
 
 				// GroupLayout 설정
@@ -72,6 +78,7 @@ public class FeedbackDialog extends JDialog {
 				layout.setAutoCreateContainerGaps(true);
 
 				layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(imageLabel) // 이미지 왼쪽
+						.addComponent(imageLabel)
 						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED) // 간격
 						.addComponent(textLabel, GroupLayout.PREFERRED_SIZE, 350, GroupLayout.PREFERRED_SIZE) // 텍스트 너비
 																												// 고정
@@ -92,7 +99,7 @@ public class FeedbackDialog extends JDialog {
 
 		// 스크롤 가능하도록 JScrollPane 추가
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
-		scrollPane.setPreferredSize(new Dimension(500, 600)); // 다이얼로그 크기 설정
+		scrollPane.setPreferredSize(new Dimension(600, 600)); // 다이얼로그 크기 설정
 		add(scrollPane, BorderLayout.CENTER);
 
 		// 닫기 버튼 추가

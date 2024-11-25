@@ -152,7 +152,15 @@ public class GameController implements MouseListener, MouseMotionListener {
 					// 올바른 도구인지 확인하여 동작 수행
 					if (gameModel.isCorrectTool(tool, draggedComplexItem)) {
 						gameModel.changeCurrentItem(draggedComplexItem.seperateItem());
-					}
+					} else {
+	                    // 잘못된 도구 사용 시 피드백 추가
+	                    incorrectItems.add(new Item(
+	                        draggedComplexItem.getName(),
+	                        draggedComplexItem.getNecessaryTool(), // 잘못 사용된 도구 이름
+	                        draggedComplexItem.getImagePath()
+	                    ));
+	                    gameView.showIncorrectMark(dropPoint);
+	                }
 					// 아이템 재배치
 					gameView.remove(draggedComplexItem);
 					gameView.displayNewItem();
