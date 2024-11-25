@@ -43,15 +43,15 @@ public class ComplexItem extends Item {
 		return necessaryTool;
 	}
 	
-	public String getIncorrectToolFeedback() {
-	    if (necessaryTool.equals("cutter")) {
-	        return getName() + "의 비닐을 먼저 제거해야 합니다.";
-	    } else if (necessaryTool.equals("sink")) {
-	        return getName() + "의 내용물을 먼저 비워야 합니다.";
-	    }
-	    return getName() + "를 적절히 처리하세요.";
+	@Override
+	public String getTutorialMessage() {
+	    return subItem != null
+	    		? "<html>" + name + "은(는) " + necessaryTool + "을(를) 사용 후<br/>" 
+	    			+ mainItem.getName() + "은(는) " + mainItem.getType() + " 수거함에,<br/>"
+	    			+ subItem.getName() + "은(는) " + subItem.getType() + " 수거함에 넣어주세요!</html>"
+	    		: "<html>" + name + "은(는) " + necessaryTool + "을(를) 사용하여 처리 후<br/>" 
+    			+ mainItem.getName() + "은(는) " + mainItem.getType() + " 수거함에 넣어주세요!</html>";
 	}
-
 	
 	public List<Item> seperateItem() {
 		// 메인 아이템과 서브 아이템을 분리하여 리스트로 리턴하는 메소드

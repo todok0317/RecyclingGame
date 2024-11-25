@@ -22,41 +22,49 @@ public class FeedbackDialog extends JDialog {
 				.collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Item::getImagePath))));
 
 		// 다이얼로그 레이아웃 설정
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(20, 20));
 
 		// 최종 점수 표시
 		JLabel scoreLabel = new JLabel("최종 점수: " + finalScore);
 		scoreLabel.setFont(StyleManager.fontMidiumBold);
 		scoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		JPanel contentPanel = new JPanel();
-		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-		contentPanel.add(scoreLabel);
-		
+		JPanel headerPanel = new JPanel(); // 점수와 메시지를 표시하는 패널
+		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+		headerPanel.add(Box.createVerticalStrut(20));
+		headerPanel.add(scoreLabel);
+
 		// 최고 점수를 갱신했다면 알림 표시
 		if (isHighScore) {
 			JLabel highScoreLabel = new JLabel("축하합니다! 최고 점수를 갱신했습니다!");
 			highScoreLabel.setFont(StyleManager.fontMidiumBold);
 			highScoreLabel.setForeground(Color.RED);
 			highScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			contentPanel.add(highScoreLabel);
+			headerPanel.add(highScoreLabel);
 		}
-		
-		contentPanel.add(Box.createVerticalStrut(10)); // 점수와 피드백 간격		
 
 		if (!incorrectItemSet.isEmpty()) {
 			JLabel feedbackLabel = new JLabel("올바른 분리 수거 방법을 알아보아요! ");
 			feedbackLabel.setFont(StyleManager.fontSmallBold);
 			feedbackLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			contentPanel.add(feedbackLabel);
+			headerPanel.add(feedbackLabel);
 
-			contentPanel.add(Box.createVerticalStrut(20));
+			// 잘못된 분리수거 리스트를 담을 패널
+			JPanel contentPanel = new JPanel();
+			contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+			contentPanel.add(Box.createVerticalStrut(10)); // 점수와 피드백 간격
+
+			// 스크롤 가능하도록 JScrollPane 추가
+			JScrollPane scrollPane = new JScrollPane(contentPanel);
+			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
 			// 잘못된 항목 리스트 표시
 			for (Item item : incorrectItemSet) {
 				JPanel itemPanel = new JPanel();
-				GroupLayout layout = new GroupLayout(itemPanel);
-				itemPanel.setLayout(layout);
+				itemPanel.setLayout(new BorderLayout(10, 0));
+				itemPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // 패널 여백
 				itemPanel.setBackground(Color.WHITE);
 
 				// 아이템 이미지
@@ -64,50 +72,55 @@ public class FeedbackDialog extends JDialog {
 				imageLabel.setIcon(getResizedIcon(item.getImagePath(), 100, 100)); // 이미지 크기 고정
 
 				// 잘못된 도구 사용 피드백 추가
-	            String feedbackText = item instanceof ComplexItem 
-	                    ? ((ComplexItem) item).getIncorrectToolFeedback() 
-	                    : item.getName() + " 용기는 " + item.getType() + " 수거함에 배출해야 합니다.";
+				String feedbackText = item instanceof ComplexItem ? ((ComplexItem) item).getTutorialMessage()
+						: item.getTutorialMessage();
 
-				
 				// 아이템 설명
-	            JLabel textLabel = new JLabel(feedbackText);
-				textLabel.setFont(StyleManager.fontSmallRegular);
+				JLabel feedbackTextLabel = new JLabel(feedbackText);
+				feedbackTextLabel.setFont(StyleManager.fontSmallRegular);
 
-				// GroupLayout 설정
-				layout.setAutoCreateGaps(true);
-				layout.setAutoCreateContainerGaps(true);
+				JPanel feedbackTextPanel = new JPanel();
+				feedbackTextPanel.setLayout(new BorderLayout());
+				feedbackTextPanel.setBackground(Color.WHITE);
+				feedbackTextPanel.add(feedbackTextLabel);
 
-				layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(imageLabel) // 이미지 왼쪽
-						.addComponent(imageLabel)
-						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED) // 간격
-						.addComponent(textLabel, GroupLayout.PREFERRED_SIZE, 350, GroupLayout.PREFERRED_SIZE) // 텍스트 너비
-																												// 고정
-				);
-
-				layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-						.addComponent(imageLabel).addComponent(textLabel));
+				itemPanel.add(imageLabel, BorderLayout.WEST);
+				itemPanel.add(feedbackTextPanel, BorderLayout.CENTER);
 
 				contentPanel.add(itemPanel);
 				contentPanel.add(Box.createVerticalStrut(10)); // 항목 간 간격
 			}
+
+			add(scrollPane, BorderLayout.CENTER);
+
 		} else {
 			JLabel successLabel = new JLabel("모든 분리수거를 올바르게 수행했습니다! 잘하셨습니다!");
 			successLabel.setFont(StyleManager.fontSmallRegular);
 			successLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			contentPanel.add(successLabel);
+			headerPanel.add(successLabel);
 		}
 
-		// 스크롤 가능하도록 JScrollPane 추가
-		JScrollPane scrollPane = new JScrollPane(contentPanel);
-		scrollPane.setPreferredSize(new Dimension(600, 600)); // 다이얼로그 크기 설정
-		add(scrollPane, BorderLayout.CENTER);
+		add(headerPanel, BorderLayout.NORTH);
 
 		// 닫기 버튼 추가
+		JPanel buttonPanel = new JPanel();
 		JButton closeButton = new JButton("닫기");
+		closeButton.setPreferredSize(new Dimension(100, 40));
+		closeButton.setBackground(StyleManager.buttonColor);
+		closeButton.setFocusPainted(false);
+		closeButton.setForeground(Color.WHITE);
+		closeButton.setFont(StyleManager.fontMidiumBold);
 		closeButton.addActionListener(e -> setVisible(false));
-		add(closeButton, BorderLayout.SOUTH);
+		buttonPanel.add(closeButton);
+		add(buttonPanel, BorderLayout.SOUTH);
 
-		pack();
+		// 다이얼로그 크기 조정
+		if (incorrectItemSet.size() < 3) {
+			pack();
+			setSize(500, this.getPreferredSize().height);
+		} else {
+			setSize(500, 600);
+		}
 		setLocationRelativeTo(parent);
 	}
 

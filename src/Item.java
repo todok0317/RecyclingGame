@@ -8,7 +8,7 @@ public class Item extends JLabel {
 	// JLabel을 상속 받아 구현
 	// ***************************
 
-	private String name;
+	protected String name;
 	private String type; // 아이템의 재질 유형
 	private String imagePath; // 이미지 경로를 저장
 
@@ -33,6 +33,10 @@ public class Item extends JLabel {
 
 	public String getType() {
 		return type;
+	}
+	
+	public String getTutorialMessage() {
+		return name + "은(는) " + type + " 수거함에 넣어주세요!";
 	}
 	
 }
