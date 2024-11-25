@@ -27,11 +27,8 @@ public class GameView extends JPanel {
 		incorrectMarkLabel.setVisible(false); // 초기에는 보이지 않음
 		add(incorrectMarkLabel); // GameView에 추가
 
-		initializeLevelSelectButton();
-		setComponentZOrder(levelSelectButton, 0); // 버튼을 최상위로 설정
 		revalidate();
 		repaint();
-
 	}
 
 	// 레벨 선택 화면으로 돌아가는 버튼 생성
@@ -45,18 +42,20 @@ public class GameView extends JPanel {
 		int buttonY = 30;
 
 		levelSelectButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
+		add(levelSelectButton);
+		setComponentZOrder(levelSelectButton, 0); // 버튼을 최상위로 설정
 	}
 
 	// 게임 화면 초기화
 	public void resetView() {
 		removeAll(); // 컴포넌트 모두 제거 (아이템, 분리수거 통들)
 
-		add(levelSelectButton);
-
 		displayBins(); // 분리수거 통 배치
 		displayNewItem(); // 아이템 배치
 		displayTools();	// 도구 배치
 		add(incorrectMarkLabel); // X 표시 JLabel 다시 추가
+		
+		initializeLevelSelectButton();
 	}
 
 	private ImageIcon getResizedIcon(String path, int width, int height) {

@@ -91,6 +91,7 @@ public class TutorialDialogManager {
 		nextButton.setForeground(Color.WHITE);
 		nextButton.setFont(StyleManager.fontMidiumBold);
 		nextButton.addActionListener(e -> {
+			SoundManager.playSound("click");
 			dialog.dispose();
 			showItemDialogs(levelData, index + 1, level); // 다음 아이템 다이얼로그 호출
 		});
@@ -194,6 +195,7 @@ public class TutorialDialogManager {
 		nextButton.setForeground(Color.WHITE);
 		nextButton.setFont(StyleManager.fontMidiumBold);
 		nextButton.addActionListener(e -> {
+			SoundManager.playSound("click");
 			levelDialog.dispose(); // 다이얼로그 닫기
 		});
 

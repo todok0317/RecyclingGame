@@ -27,23 +27,24 @@ public class GameController implements MouseListener, MouseMotionListener {
 		// gameView에 마우스리스너 부착
 		gameView.addMouseListener(this);
 		gameView.addMouseMotionListener(this);
-		gameView.levelSelectButton.addActionListener(e -> {
-			stopGame();
-			gameFrame.showLevelSelectMenu();
-		});
 	}
 
 	// 게임을 시작하는 메소드
 	public void startGame() {
 		gameModel.provideNewItem(); // 첫 아이템 제공
 		gameView.resetView(); // 게임 화면 초기화
+		// 뒤로가기 버튼 추가
+		gameView.levelSelectButton.addActionListener(e -> {
+			stopGame();
+			gameFrame.showLevelSelectMenu();
+		});
 		incorrectItems.clear();
 
 		// 1초마다 시간을 감소시키고 남은 시간이 0이 되면 게임을 종료시키는 타이머 생성
 		gameTimer = new Timer(1000, e -> {
 			gameModel.decrementTime(); // 시간 감소
 			gameView.repaint(); // 화면 다시 그리기
-			
+
 			if (gameModel.getTimeLeft() <= 0) {
 				endGame(); // 게임 종료
 			}
@@ -53,12 +54,15 @@ public class GameController implements MouseListener, MouseMotionListener {
 
 	// 게임 종료 메소드
 	private void endGame() {
-		stopGame(); // 게임 중지	
+		stopGame(); // 게임 중지
 		// 최고 점수라면 최고 점수 정보를 업데이트 하고 알려줌
 		boolean isHighScore = gameModel.updateHighScore();
 
+		SoundManager.playSound("clear"); // 효과음 출력
+
 		// 게임이 종료된 시점에 FeedbackDialog로 최종 점수와 잘못된 항목을 출력
-		FeedbackDialog feedbackDialog = new FeedbackDialog(gameFrame, gameModel.getScore(), isHighScore, incorrectItems);
+		FeedbackDialog feedbackDialog = new FeedbackDialog(gameFrame, gameModel.getScore(), isHighScore,
+				incorrectItems);
 		feedbackDialog.setVisible(true);
 
 		gameFrame.showLevelSelectMenu();
@@ -78,11 +82,12 @@ public class GameController implements MouseListener, MouseMotionListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		Point clickPoint = e.getPoint(); // 마우스를 누른 좌표
-		
+
 		// 누른 좌표가 현재 제공된 아이템 위라면 아이템을 드래그할 수 있게 설정
 		for (Item item : gameModel.getCurrentItem()) {
 			if (item.getBounds().contains(clickPoint)) {
 				draggedItem = item;
+				SoundManager.playSound("pick"); // 효과음 출력
 				break;
 			}
 		}
@@ -106,7 +111,7 @@ public class GameController implements MouseListener, MouseMotionListener {
 
 			sortWaste(dropPoint);
 			useTool(dropPoint);
-			
+
 			// 현재 아이템이 없다면 새 아이템 제공
 			if (gameModel.getCurrentItem().isEmpty()) {
 				gameModel.provideNewItem(); // 새 아이템 제공
@@ -125,13 +130,17 @@ public class GameController implements MouseListener, MouseMotionListener {
 				boolean isCorrect = gameModel.isCorrectBin(bin, draggedItem);
 				gameModel.updateScore(isCorrect); // 점수 업데이트
 
-				if (!isCorrect) {
+				if (isCorrect) {
+					SoundManager.playSound("correct"); // 효과음 출력
+				} else {
 					// 실패한 항목 리스트에 추가
 					incorrectItems.add(draggedItem);
 					// X 표시를 드롭 위치에 표시
 					gameView.showIncorrectMark(dropPoint);
+
+					SoundManager.playSound("incorrect"); // 효과음 출력
 				}
-				
+
 				gameView.remove(draggedItem); // 드래그하고 있던 아이템 제거
 				gameModel.getCurrentItem().remove(draggedItem); // 드래그하고 있던 아이템 제거
 				break;
@@ -143,15 +152,17 @@ public class GameController implements MouseListener, MouseMotionListener {
 	private void useTool(Point dropPoint) {
 		// 두 가지 재질이 섞여 있는 아이템일 경우에만 실행
 		if (gameModel.getTools() != null && draggedItem instanceof ComplexItem) {
-			
+
 			// 마우스를 뗀 좌표에 위치한 도구를 알아냄
 			for (Tool tool : gameModel.getTools()) {
 				if (tool.getBounds().contains(dropPoint)) {
 					ComplexItem draggedComplexItem = (ComplexItem) draggedItem;
-					
+
 					// 올바른 도구인지 확인하여 동작 수행
 					if (gameModel.isCorrectTool(tool, draggedComplexItem)) {
 						gameModel.changeCurrentItem(draggedComplexItem.seperateItem());
+
+						SoundManager.playSound(tool.getName()); // 효과음 출력
 					}
 					// 아이템 재배치
 					gameView.remove(draggedComplexItem);

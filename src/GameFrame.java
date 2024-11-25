@@ -52,11 +52,13 @@ public class GameFrame extends JFrame {
 	// 레벨 선택 화면으로 전환
 	public void showLevelSelectMenu() {
 		cardLayout.show(getContentPane(), "LevelSelect");
+		SoundManager.playSound("click");
 	}
 
 	// 메인 메뉴 화면으로 전환
 	private void showMainMenu() {
 		cardLayout.show(getContentPane(), "MainMenu");
+		SoundManager.playSound("click");
 	}
 
 	// 선택한 레벨에 따른 튜토리얼을 표시
@@ -83,6 +85,7 @@ public class GameFrame extends JFrame {
 			gameModel.setLevelData(levelData);	// 해당 레벨로 게임 데이터 설정
 			
 			cardLayout.show(getContentPane(), "Game"); // 게임 화면으로 전환
+			SoundManager.playSound("start");
 
 			showTutorialDialog(level); // 튜로리얼 표시
 			
