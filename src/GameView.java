@@ -26,16 +26,15 @@ public class GameView extends JPanel {
 
 		// 타이머, 스코어 이미지 로드
 		try {
-			timerIcon = ImageIO.read(new File("images/stopwatch.png"));
-			scoreIcon = ImageIO.read(new File("images/star.png"));
-
+			timerIcon = ImageIO.read(new File("images/deco/stopwatch.png"));
+			scoreIcon = ImageIO.read(new File("images/deco/star.png"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// X 표시용 JLabel 초기화
 		incorrectMarkLabel = new JLabel();
-		incorrectMarkLabel.setIcon(getResizedIcon("images/incorrect_mark.png", 200, 200)); // 크기 조정된 아이콘
+		incorrectMarkLabel.setIcon(getResizedIcon("images/deco/incorrect_mark.png", 200, 200)); // 크기 조정된 아이콘
 		incorrectMarkLabel.setSize(200, 200); // 크기 설정
 		incorrectMarkLabel.setVisible(false); // 초기에는 보이지 않음
 		add(incorrectMarkLabel); // GameView에 추가
@@ -49,16 +48,15 @@ public class GameView extends JPanel {
 		levelSelectButton = new JButton("이전");
 
 		levelSelectButton.setFont(StyleManager.buttonFont);
-		levelSelectButton.setPreferredSize(new Dimension(110, 50)); // 버튼 크기 설정
 		levelSelectButton.setFocusPainted(false);
 		levelSelectButton.setOpaque(true);
 		levelSelectButton.setBackground(StyleManager.buttonColor);
 
-		int buttonWidth = 100;
-		int buttonHeight = 40;
+		int buttonWidth = 110;
+		int buttonHeight = 50;
 
-		int buttonX = 30;
-		int buttonY = 30;
+		int buttonX = 5;
+		int buttonY = 5;
 
 		levelSelectButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
 		add(levelSelectButton);
@@ -207,7 +205,7 @@ public class GameView extends JPanel {
 		}
 
 		// 타이머 및 점수 표시
-		g.setFont(new Font("Arial", Font.BOLD, 40));
+		g.setFont(StyleManager.fontExtraLargeBold);
 		g.drawString("  " + remainingTime, 800, 100);
 		g.drawString("  " + gameModel.getScore(), 510, 100);
 	}
