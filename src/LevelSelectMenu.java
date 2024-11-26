@@ -33,11 +33,14 @@ public class LevelSelectMenu extends JPanel {
         add(backButtonPanel);
         add(Box.createVerticalStrut(5)); //5 간격
 	
-		JLabel title = new JLabel("레벨은 총 세개로 구성되어 있어요.", SwingConstants.CENTER);
+		JLabel title = new JLabel("레벨은 총 세 개로 구성되어 있어요.", SwingConstants.CENTER);
+
 		title.setFont(StyleManager.fontLargeBold);
 		title.setAlignmentX(Component.CENTER_ALIGNMENT); // X축으로 중앙 정렬
 		add(title);
-
+		
+		add(Box.createVerticalStrut(20)); //타이틀과 서브타이틀 간격 추가
+		
 		JLabel subtitle = new JLabel("단계별로 난이도가 달라져요.", SwingConstants.CENTER);
 		subtitle.setFont(StyleManager.fontMidiumRegular);
 		subtitle.setAlignmentX(Component.CENTER_ALIGNMENT); // X축으로 중앙 정렬
@@ -57,7 +60,7 @@ public class LevelSelectMenu extends JPanel {
 		buttonPanel.add(level1Button);
 		buttonPanel.add(level2Button);
 		buttonPanel.add(level3Button);
-		add(Box.createVerticalStrut(200));
+		add(Box.createVerticalStrut(20));
 		add(buttonPanel);
 		
 		setBackground(StyleManager.backgroundColor);
