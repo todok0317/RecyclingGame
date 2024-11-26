@@ -25,7 +25,7 @@ public class LevelManager {
 	private LevelData createDataLevel1() {
 		// 레벨1 데이터
 		List<Item> itemTemplates = new ArrayList<>();
-		itemTemplates.add(new Item("플라스틱", "플라스틱", "images/plastic.png"));
+		itemTemplates.add(new Item("빈 페트병", "플라스틱", "images/plastic.png"));
 		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
 		itemTemplates.add(new Item("종이", "종이", "images/paper.png"));
 
@@ -40,7 +40,7 @@ public class LevelManager {
 	private LevelData createDataLevel2() {
 		// 레벨2 데이터
 		List<Item> itemTemplates = new ArrayList<>();
-		itemTemplates.add(new Item("플라스틱", "플라스틱", "images/plastic.png"));
+		itemTemplates.add(new Item("빈 페트병", "플라스틱", "images/plastic.png"));
 		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
 		itemTemplates.add(new Item("종이", "종이", "images/paper.png"));
 		itemTemplates.add(new Item("일반", "일반", "images/regular.png"));
@@ -58,9 +58,9 @@ public class LevelManager {
 		// 레벨3 데이터
 		List<Item> itemTemplates = new ArrayList<>();
 		itemTemplates.add(new Item("페트병", "페트", "images/petbottle.png"));
-		itemTemplates.add(new ComplexItem("라벨이 있는 페트병", "페트#cutter#비닐", "images/petbottle#cutter#label.png", new Item("페트병", "페트", "images/petbottle.png"), new Item("라벨", "비닐", "images/label.png"), "cutter"));
+		itemTemplates.add(new ComplexItem("라벨이 있는 페트병", "페트#비닐", "images/petbottle#cutter#label.png", new Item("페트병", "페트", "images/petbottle.png"), new Item("라벨", "비닐", "images/label.png"), "커터"));
 		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
-		itemTemplates.add(new ComplexItem("음료수가 있는 페트병", "페트#sink#", "images/petbottle#sink#.png", new Item("페트병", "페트", "images/petbottle.png"), "sink"));
+		itemTemplates.add(new ComplexItem("음료수가 있는 페트병", "페트#", "images/petbottle#sink#.png", new Item("페트병", "페트", "images/petbottle.png"), "싱크대"));
 
 		List<Bin> bins = new ArrayList<>();
 		bins.add(new Bin("페트", "images/pet_bin.png"));
@@ -68,8 +68,8 @@ public class LevelManager {
 		bins.add(new Bin("비닐", "images/vinyl_bin.png"));
 		
 		List<Tool> tools = new ArrayList<>();
-		tools.add(new Tool("cutter", "images/cutter.png"));
-		tools.add(new Tool("sink", "images/sink.png"));
+		tools.add(new Tool("커터", "images/cutter.png"));
+		tools.add(new Tool("싱크대", "images/sink.png"));
 
 		return new LevelData(3, itemTemplates, bins, tools);
 	}
