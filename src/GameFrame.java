@@ -22,7 +22,7 @@ public class GameFrame extends JFrame {
 	public GameFrame() {
 		cardLayout = new CardLayout();
 		setLayout(cardLayout);
-		
+
 		scoreManager = new ScoreManager();
 		gameModel = new GameModel(scoreManager);
 		gameView = new GameView(gameModel);
@@ -52,27 +52,27 @@ public class GameFrame extends JFrame {
 	// 레벨 선택 화면으로 전환
 	public void showLevelSelectMenu() {
 		cardLayout.show(getContentPane(), "LevelSelect");
+		SoundManager.playSound("click");
 	}
 
 	// 메인 메뉴 화면으로 전환
 	private void showMainMenu() {
 		cardLayout.show(getContentPane(), "MainMenu");
+		SoundManager.playSound("click");
 	}
-	
 
 	public void showTutorialDialog(String level) {
-	    // 레벨 변경 시 초기화
-	    tutorialDialogManager.resetLevelDialogShown();
+		// 레벨 변경 시 초기화
+		tutorialDialogManager.resetLevelDialogShown();
 
-	    LevelData levelData = levelManager.getLevelData(level);
-	    if (levelData == null || levelData.getItemTemplates().isEmpty()) {
-	        System.out.println("선택한 레벨에 대한 사진이 없습니다.");
-	        return;
-	    }
+		LevelData levelData = levelManager.getLevelData(level);
+		if (levelData == null || levelData.getItemTemplates().isEmpty()) {
+			System.out.println("선택한 레벨에 대한 사진이 없습니다.");
+			return;
+		}
 
-	    tutorialDialogManager.showItemDialogs(levelData, 0, level);
+		tutorialDialogManager.showItemDialogs(levelData, 0, level);
 	}
-
 
 	private void startGameWithLevel(String level) {
 		// 해금된 레벨만 플레이 가능
@@ -97,7 +97,7 @@ public class GameFrame extends JFrame {
 			JLabel extraTextLabel = new JLabel("전 레벨에서 100점을 돌파해야 합니다.");
 			extraTextLabel.setFont(StyleManager.fontMidiumBold); // 작은 폰트 설정
 			extraTextLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT); // 가운데 정렬
-			//extraTextLabel.setForeground(Color.GRAY); // 보조 텍스트 색상 설정
+			// extraTextLabel.setForeground(Color.GRAY); // 보조 텍스트 색상 설정
 
 			// "확인" 버튼 추가
 			JButton confirmButton = new JButton("확인");
@@ -112,7 +112,6 @@ public class GameFrame extends JFrame {
 			confirmButton.addActionListener(e -> {
 				((JDialog) SwingUtilities.getWindowAncestor(confirmButton)).dispose(); // 다이얼로그 닫기
 			});
-
 
 			// 패널에 컴포넌트 추가
 			panel.add(imageLabel);
@@ -136,6 +135,7 @@ public class GameFrame extends JFrame {
 			gameModel.setLevelData(levelData); // 해당 레벨로 게임 데이터 설정
 
 			cardLayout.show(getContentPane(), "Game"); // 게임 화면으로 전환
+			SoundManager.playSound("start");
 
 			showTutorialDialog(level); // 튜로리얼 표시
 
