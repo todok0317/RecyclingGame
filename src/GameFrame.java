@@ -58,34 +58,87 @@ public class GameFrame extends JFrame {
 	private void showMainMenu() {
 		cardLayout.show(getContentPane(), "MainMenu");
 	}
+	
 
-	// 선택한 레벨에 따른 튜토리얼을 표시
 	public void showTutorialDialog(String level) {
-		// 선택한 레벨에 따라 LevelData
-		LevelData levelData = levelManager.getLevelData(level);
-		// 예외 처리
-		if (levelData == null || levelData.getItemTemplates().isEmpty()) {
-			System.out.println("선택한 레벨에 대한 사진이 없습니다.");
-			return;
-		}
+	    // 레벨 변경 시 초기화
+	    tutorialDialogManager.resetLevelDialogShown();
 
-		// 튜토리얼 다이얼로그 처리를 다른데서 처리
-		tutorialDialogManager.showItemDialogs(levelData, 0, level);
+	    LevelData levelData = levelManager.getLevelData(level);
+	    if (levelData == null || levelData.getItemTemplates().isEmpty()) {
+	        System.out.println("선택한 레벨에 대한 사진이 없습니다.");
+	        return;
+	    }
+
+	    tutorialDialogManager.showItemDialogs(levelData, 0, level);
 	}
 
-	// 게임 시작 메소드, 선택한 레벨에 맞는 데이터를 불러와 게임을 시작
+
 	private void startGameWithLevel(String level) {
 		// 해금된 레벨만 플레이 가능
 		if (Integer.parseInt(level) > scoreManager.getUnlockedLevel()) {
-			JOptionPane.showMessageDialog(levelSelectMenu, "아직 플레이할 수 없습니다");
+			// 다이얼로그에 이미지와 텍스트 추가
+			JPanel panel = new JPanel();
+			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // 수직으로 정렬
+			panel.setBackground(StyleManager.tutorialBackgroudColor); // 전체 배경색 설정
+
+			// 이미지 로드 및 크기 조정
+			ImageIcon originalIcon = new ImageIcon("images/levelup.png");
+			Image scaledImage = originalIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH); // 크기 조정
+			JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+			imageLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT); // 가운데 정렬
+
+			// "아직 플레이할 수 없습니다" 텍스트 라벨
+			JLabel textLabel = new JLabel("레벨업을 해야 합니다.");
+			textLabel.setFont(StyleManager.fontLargeBold); // 텍스트 스타일 설정
+			textLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT); // 가운데 정렬
+
+			// 추가 텍스트: "전 레벨에서 100점을 돌파해야 합니다."
+			JLabel extraTextLabel = new JLabel("전 레벨에서 100점을 돌파해야 합니다.");
+			extraTextLabel.setFont(StyleManager.fontMidiumBold); // 작은 폰트 설정
+			extraTextLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT); // 가운데 정렬
+			//extraTextLabel.setForeground(Color.GRAY); // 보조 텍스트 색상 설정
+
+			// "확인" 버튼 추가
+			JButton confirmButton = new JButton("확인");
+			confirmButton.setAlignmentX(JButton.CENTER_ALIGNMENT); // 가운데 정렬
+			confirmButton.setFont(StyleManager.fontSmallBold);
+			confirmButton.setFocusPainted(false);
+			confirmButton.setPreferredSize(new Dimension(100, 50)); // 버튼 크기 유지
+			confirmButton.setForeground(Color.WHITE); // 텍스트 색상
+			confirmButton.setBackground(StyleManager.buttonColor); // 버튼 배경색
+			confirmButton.setOpaque(true); // 불투명 설정 (배경색 보이게)
+			confirmButton.setContentAreaFilled(true); // 버튼 배경 렌더링 활성화
+			confirmButton.addActionListener(e -> {
+				((JDialog) SwingUtilities.getWindowAncestor(confirmButton)).dispose(); // 다이얼로그 닫기
+			});
+
+
+			// 패널에 컴포넌트 추가
+			panel.add(imageLabel);
+			panel.add(Box.createVerticalStrut(10)); // 이미지와 텍스트 사이에 여백 추가
+			panel.add(textLabel);
+			panel.add(Box.createVerticalStrut(5)); // 두 텍스트 라벨 사이에 여백 추가
+			panel.add(extraTextLabel);
+			panel.add(Box.createVerticalStrut(20)); // 텍스트와 버튼 사이 여백 추가
+			panel.add(confirmButton);
+
+			// JDialog 생성
+			JDialog dialog = new JDialog();
+			dialog.setUndecorated(true); // 창 장식 제거
+			dialog.setModal(true); // 모달 설정
+			dialog.getContentPane().add(panel); // 다이얼로그에 패널 추가
+			dialog.setSize(400, 400); // 크기 설정
+			dialog.setLocationRelativeTo(levelSelectMenu); // 화면 중앙에 위치
+			dialog.setVisible(true); // 다이얼로그 표시
 		} else {
 			LevelData levelData = levelManager.getLevelData(level); // 레벨 데이터 받기
-			gameModel.setLevelData(levelData);	// 해당 레벨로 게임 데이터 설정
-			
+			gameModel.setLevelData(levelData); // 해당 레벨로 게임 데이터 설정
+
 			cardLayout.show(getContentPane(), "Game"); // 게임 화면으로 전환
 
 			showTutorialDialog(level); // 튜로리얼 표시
-			
+
 			new GameController(gameModel, gameView, this).startGame(); // 컨트롤러 생성 및 게임 시작
 		}
 	}
