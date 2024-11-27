@@ -15,7 +15,7 @@ public class FeedbackDialog extends JDialog {
 	// ***************************
 
 	public FeedbackDialog(JFrame parent, int finalScore, boolean isHighScore, List<Item> incorrectItems) {
-		super(parent, "게임 결과", true);
+		super(parent, "게임 종료 - 피드백", true);
 
 		// incorrectItems를 Set으로 설정해 중복 아이템 제거
 		Set<Item> incorrectItemSet = incorrectItems.stream()

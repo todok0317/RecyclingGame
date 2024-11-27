@@ -24,6 +24,7 @@ public class GameView extends JPanel {
 		//타이머, 스코어 이미지 로드
 		try {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			timerIcon = ImageIO.read(new File("images/deco/stopwatch.png"));
 			scoreIcon = ImageIO.read(new File("images/deco/star.png"));
 =======
@@ -31,6 +32,11 @@ public class GameView extends JPanel {
 			scoreIcon = ImageIO.read(new File("images/star.png"));
 			
 >>>>>>> parent of b284cf5 (Merge branch 'feature' into main)
+=======
+			timerIcon = ImageIO.read(new File("images/stopwatch.png"));
+			scoreIcon = ImageIO.read(new File("images/star.png"));
+
+>>>>>>> parent of 091706a (적용되지 않은 효과음 및 디자인 적용, 코드 정리, 이미지 폴더 정리)
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -39,7 +45,7 @@ public class GameView extends JPanel {
 
 		// X 표시용 JLabel 초기화
 		incorrectMarkLabel = new JLabel();
-		incorrectMarkLabel.setIcon(getResizedIcon("images/deco/incorrect_mark.png", 200, 200)); // 크기 조정된 아이콘
+		incorrectMarkLabel.setIcon(getResizedIcon("images/incorrect_mark.png", 200, 200)); // 크기 조정된 아이콘
 		incorrectMarkLabel.setSize(200, 200); // 크기 설정
 		incorrectMarkLabel.setVisible(false); // 초기에는 보이지 않음
 		add(incorrectMarkLabel); // GameView에 추가
@@ -57,6 +63,7 @@ public class GameView extends JPanel {
 		levelSelectButton = new JButton("이전");
 		
 		levelSelectButton.setFont(StyleManager.buttonFont);
+		levelSelectButton.setPreferredSize(new Dimension(110, 50)); // 버튼 크기 설정
 		levelSelectButton.setFocusPainted(false);
 		levelSelectButton.setOpaque(true);
 		levelSelectButton.setBackground(StyleManager.buttonColor);
@@ -64,11 +71,11 @@ public class GameView extends JPanel {
 		levelSelectButton = new JButton("Back");
 >>>>>>> parent of bceb675 (아이템, 쓰레기통 이미지 적용, 게임 화면 디자인 (#7))
 
-		int buttonWidth = 110;
-		int buttonHeight = 50;
+		int buttonWidth = 100;
+		int buttonHeight = 40;
 
-		int buttonX = 5;
-		int buttonY = 5;
+		int buttonX = 30;
+		int buttonY = 30;
 
 		levelSelectButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
 	}
@@ -184,7 +191,11 @@ public class GameView extends JPanel {
 		super.paintComponent(g);
 		// 타이머 및 점수 표시
 <<<<<<< HEAD
+<<<<<<< HEAD
 		g.setFont(StyleManager.fontExtraLargeBold);
+=======
+		g.setFont(new Font("Arial", Font.BOLD, 40));
+>>>>>>> parent of 091706a (적용되지 않은 효과음 및 디자인 적용, 코드 정리, 이미지 폴더 정리)
 		g.drawString("  " + remainingTime, 800, 100);
 		g.drawString("  " + gameModel.getScore(), 510, 100);
 =======

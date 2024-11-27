@@ -78,9 +78,12 @@ public class GameFrame extends JFrame {
 		// 해금된 레벨만 플레이 가능
 		if (Integer.parseInt(level) > scoreManager.getUnlockedLevel()) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			SoundManager.playSound("click");
 			showLevelLockedDialog();
 =======
+=======
+>>>>>>> parent of 091706a (적용되지 않은 효과음 및 디자인 적용, 코드 정리, 이미지 폴더 정리)
 			// 다이얼로그에 이미지와 텍스트 추가
 			JPanel panel = new JPanel();
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // 수직으로 정렬
@@ -101,7 +104,11 @@ public class GameFrame extends JFrame {
 			JLabel extraTextLabel = new JLabel("전 레벨에서 100점을 돌파해야 합니다.");
 			extraTextLabel.setFont(StyleManager.fontMidiumBold); // 작은 폰트 설정
 			extraTextLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT); // 가운데 정렬
+<<<<<<< HEAD
 			//extraTextLabel.setForeground(Color.GRAY); // 보조 텍스트 색상 설정
+=======
+			// extraTextLabel.setForeground(Color.GRAY); // 보조 텍스트 색상 설정
+>>>>>>> parent of 091706a (적용되지 않은 효과음 및 디자인 적용, 코드 정리, 이미지 폴더 정리)
 
 			// "확인" 버튼 추가
 			JButton confirmButton = new JButton("확인");
@@ -117,7 +124,10 @@ public class GameFrame extends JFrame {
 				((JDialog) SwingUtilities.getWindowAncestor(confirmButton)).dispose(); // 다이얼로그 닫기
 			});
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 091706a (적용되지 않은 효과음 및 디자인 적용, 코드 정리, 이미지 폴더 정리)
 			// 패널에 컴포넌트 추가
 			panel.add(imageLabel);
 			panel.add(Box.createVerticalStrut(10)); // 이미지와 텍스트 사이에 여백 추가
@@ -135,7 +145,10 @@ public class GameFrame extends JFrame {
 			dialog.setSize(400, 400); // 크기 설정
 			dialog.setLocationRelativeTo(levelSelectMenu); // 화면 중앙에 위치
 			dialog.setVisible(true); // 다이얼로그 표시
+<<<<<<< HEAD
 >>>>>>> parent of b284cf5 (Merge branch 'feature' into main)
+=======
+>>>>>>> parent of 091706a (적용되지 않은 효과음 및 디자인 적용, 코드 정리, 이미지 폴더 정리)
 		} else {
 			LevelData levelData = levelManager.getLevelData(level); // 레벨 데이터 받기
 			gameModel.setLevelData(levelData); // 해당 레벨로 게임 데이터 설정
@@ -146,64 +159,6 @@ public class GameFrame extends JFrame {
 
 			new GameController(gameModel, gameView, this).startGame(); // 컨트롤러 생성 및 게임 시작
 		}
-	}
-
-	private void showLevelLockedDialog() {
-		// 다이얼로그에 이미지와 텍스트 추가
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // 수직으로 정렬
-		panel.setBackground(StyleManager.tutorialBackgroudColor); // 전체 배경색 설정
-
-		// 이미지 로드 및 크기 조정
-		ImageIcon originalIcon = new ImageIcon("images/deco/lock.png");
-		Image scaledImage = originalIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH); // 크기 조정
-		JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
-		imageLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT); // 가운데 정렬
-
-		// "아직 플레이할 수 없습니다" 텍스트 라벨
-		JLabel textLabel = new JLabel("아직 도전할 수 없어요");
-		textLabel.setFont(StyleManager.fontLargeBold); // 텍스트 스타일 설정
-		textLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT); // 가운데 정렬
-
-		// 추가 텍스트: "전 레벨에서 100점을 돌파해야 합니다."
-		JLabel extraTextLabel = new JLabel("이전 레벨에서 100점을 돌파 후 도전해보세요!");
-		extraTextLabel.setFont(StyleManager.fontMidiumBold); // 작은 폰트 설정
-		extraTextLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT); // 가운데 정렬
-		// extraTextLabel.setForeground(Color.GRAY); // 보조 텍스트 색상 설정
-
-		// "확인" 버튼 추가
-		JButton confirmButton = new JButton("확인");
-		confirmButton.setAlignmentX(JButton.CENTER_ALIGNMENT); // 가운데 정렬
-		confirmButton.setFont(StyleManager.fontMidiumBold);
-		confirmButton.setFocusPainted(false);
-		confirmButton.setPreferredSize(new Dimension(100, 50)); // 버튼 크기 유지
-		confirmButton.setForeground(Color.WHITE); // 텍스트 색상
-		confirmButton.setBackground(StyleManager.buttonColor); // 버튼 배경색
-		confirmButton.setOpaque(true); // 불투명 설정 (배경색 보이게)
-		confirmButton.setContentAreaFilled(true); // 버튼 배경 렌더링 활성화
-		confirmButton.addActionListener(e -> {
-			SoundManager.playSound("click");
-			((JDialog) SwingUtilities.getWindowAncestor(confirmButton)).dispose(); // 다이얼로그 닫기
-		});
-
-		// 패널에 컴포넌트 추가
-		panel.add(Box.createVerticalStrut(50));
-		panel.add(imageLabel);
-		panel.add(Box.createVerticalStrut(20)); // 이미지와 텍스트 사이에 여백 추가
-		panel.add(textLabel);
-		panel.add(Box.createVerticalStrut(5)); // 두 텍스트 라벨 사이에 여백 추가
-		panel.add(extraTextLabel);
-		panel.add(Box.createVerticalStrut(20)); // 텍스트와 버튼 사이 여백 추가
-		panel.add(confirmButton);
-
-		// JDialog 생성
-		JDialog dialog = new JDialog();
-		dialog.setUndecorated(true); // 창 장식 제거
-		dialog.setModal(true); // 모달 설정
-		dialog.getContentPane().add(panel); // 다이얼로그에 패널 추가
-		dialog.setSize(400, 400); // 크기 설정
-		dialog.setLocationRelativeTo(levelSelectMenu); // 화면 중앙에 위치
-		dialog.setVisible(true); // 다이얼로그 표시
 	}
 
 }
