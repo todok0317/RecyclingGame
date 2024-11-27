@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import javax.imageio.*;
-import java.io.File;
 
 public class GameView extends JPanel {
 	// ***************************
@@ -16,13 +14,12 @@ public class GameView extends JPanel {
 	private JLabel incorrectMarkLabel; // X 표시용 JLabel
 	private Timer clearMarkTimer; // X 표시 제거 타이머
 	public JButton levelSelectButton;
-	private Image timerIcon; //타이머 아이콘 이미지
-	private Image scoreIcon; //점 아이콘 이미지
 
 	public GameView(GameModel model) {
 		this.gameModel = model;
 		setLayout(null); // 절대 레이아웃 사용
 		setBackground(StyleManager.backgroundColor);
+<<<<<<< HEAD
 		
 		//타이머, 스코어 이미지 로드
 		try {
@@ -37,6 +34,8 @@ public class GameView extends JPanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+=======
+>>>>>>> parent of bceb675 (아이템, 쓰레기통 이미지 적용, 게임 화면 디자인 (#7))
 
 		// X 표시용 JLabel 초기화
 		incorrectMarkLabel = new JLabel();
@@ -54,12 +53,16 @@ public class GameView extends JPanel {
 
 	// 레벨 선택 화면으로 돌아가는 버튼 생성
 	private void initializeLevelSelectButton() {
+<<<<<<< HEAD
 		levelSelectButton = new JButton("이전");
 		
 		levelSelectButton.setFont(StyleManager.buttonFont);
 		levelSelectButton.setFocusPainted(false);
 		levelSelectButton.setOpaque(true);
 		levelSelectButton.setBackground(StyleManager.buttonColor);
+=======
+		levelSelectButton = new JButton("Back");
+>>>>>>> parent of bceb675 (아이템, 쓰레기통 이미지 적용, 게임 화면 디자인 (#7))
 
 		int buttonWidth = 110;
 		int buttonHeight = 50;
@@ -119,7 +122,7 @@ public class GameView extends JPanel {
 
 		int totalWidth = (binWidth * gameModel.getBins().size()) + (spacing * (gameModel.getBins().size() - 1));
 		int startX = (panelWidth - totalWidth) / 2; // 중앙 정렬을 위한 시작 X 좌표
-		int yPosition = 180; // 화면 상단에서 20px 아래
+		int yPosition = 150; // 화면 상단에서 20px 아래
 
 		for (int i = 0; i < gameModel.getBins().size(); i++) {
 			Bin bin = gameModel.getBins().get(i);
@@ -179,42 +182,16 @@ public class GameView extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		//타이머 바 그리기
-		int totalBarWidth = 300;
-		int barHeight = 20;
-		int remainingTime = gameModel.getTimeLeft();
-		int maxTime = 30;
-		
-		//남은 시간을 바의 너비로 환산
-		int currentBarWidth = (int)((remainingTime / (float) maxTime) * totalBarWidth);
-		
-		//바의 위치 설정
-		int barX = 887;
-		int barY = 75;
-		
-		//바 그리기
-		g.setColor(Color.RED);
-		g.fillRect(barX, barY, currentBarWidth, barHeight);
-		
-		//바의 경계선
-		g.setColor(Color.BLACK);
-		g.drawRect(barX, barY, currentBarWidth, barHeight);
-		
-		//타이머 아이콘 그리기
-		if (timerIcon != null) {
-			g.drawImage(timerIcon, 730, 50, 70, 70, this);
-		}
-		
-		// 점수 별 그리기
-		if (scoreIcon != null) {
-			g.drawImage(scoreIcon, 450, 50, 60, 60, this);
-		}
-		
 		// 타이머 및 점수 표시
+<<<<<<< HEAD
 		g.setFont(StyleManager.fontExtraLargeBold);
 		g.drawString("  " + remainingTime, 800, 100);
 		g.drawString("  " + gameModel.getScore(), 510, 100);
+=======
+		g.setFont(new Font("Arial", Font.BOLD, 24));
+		g.drawString("time left: " + gameModel.getTimeLeft(), 650, 100);
+		g.drawString("score: " + gameModel.getScore(), 200, 650);
+>>>>>>> parent of bceb675 (아이템, 쓰레기통 이미지 적용, 게임 화면 디자인 (#7))
 	}
 
 }
