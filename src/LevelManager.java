@@ -26,6 +26,7 @@ public class LevelManager {
 		// 레벨1 데이터
 		List<Item> itemTemplates = new ArrayList<>();
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -60,6 +61,9 @@ public class LevelManager {
 
 =======
 		itemTemplates.add(new Item("빈 페트병", "플라스틱", "images/plastic.png"));
+=======
+		itemTemplates.add(new Item("플라스틱", "플라스틱", "images/plastic.png"));
+>>>>>>> parent of 079ed8a (튜토리얼 디자인 및 메세지 수정 & 레벨업 필요 튜토리얼 디자인 수정 (#6))
 		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
 >>>>>>> parent of bceb675 (아이템, 쓰레기통 이미지 적용, 게임 화면 디자인 (#7))
 		itemTemplates.add(new Item("종이", "종이", "images/paper.png"));
@@ -85,6 +89,7 @@ public class LevelManager {
 	private LevelData createDataLevel2() {
 		// 레벨2 데이터
 		List<Item> itemTemplates = new ArrayList<>();
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 <<<<<<< HEAD
@@ -123,6 +128,9 @@ public class LevelManager {
 >>>>>>> parent of 17cec39 (레벨 아이템 구성 변경)
 =======
 		itemTemplates.add(new Item("빈 페트병", "플라스틱", "images/plastic.png"));
+=======
+		itemTemplates.add(new Item("플라스틱", "플라스틱", "images/plastic.png"));
+>>>>>>> parent of 079ed8a (튜토리얼 디자인 및 메세지 수정 & 레벨업 필요 튜토리얼 디자인 수정 (#6))
 		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
 		itemTemplates.add(new Item("종이", "종이", "images/paper.png"));
 		itemTemplates.add(new Item("일반", "일반", "images/regular.png"));
@@ -144,9 +152,9 @@ public class LevelManager {
 		// 레벨3 데이터
 		List<Item> itemTemplates = new ArrayList<>();
 		itemTemplates.add(new Item("페트병", "페트", "images/petbottle.png"));
-		itemTemplates.add(new ComplexItem("라벨이 있는 페트병", "페트#비닐", "images/petbottle#cutter#label.png", new Item("페트병", "페트", "images/petbottle.png"), new Item("라벨", "비닐", "images/label.png"), "커터"));
+		itemTemplates.add(new ComplexItem("라벨이 있는 페트병", "페트#cutter#비닐", "images/petbottle#cutter#label.png", new Item("페트병", "페트", "images/petbottle.png"), new Item("라벨", "비닐", "images/label.png"), "cutter"));
 		itemTemplates.add(new Item("유리", "유리", "images/glass.png"));
-		itemTemplates.add(new ComplexItem("음료수가 있는 페트병", "페트#", "images/petbottle#sink#.png", new Item("페트병", "페트", "images/petbottle.png"), "싱크대"));
+		itemTemplates.add(new ComplexItem("음료수가 있는 페트병", "페트#sink#", "images/petbottle#sink#.png", new Item("페트병", "페트", "images/petbottle.png"), "sink"));
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -203,8 +211,8 @@ public class LevelManager {
 >>>>>>> parent of 091706a (적용되지 않은 효과음 및 디자인 적용, 코드 정리, 이미지 폴더 정리)
 		
 		List<Tool> tools = new ArrayList<>();
-		tools.add(new Tool("커터", "images/cutter.png"));
-		tools.add(new Tool("싱크대", "images/sink.png"));
+		tools.add(new Tool("cutter", "images/cutter.png"));
+		tools.add(new Tool("sink", "images/sink.png"));
 
 		return new LevelData(3, itemTemplates, bins, tools);
 	}
