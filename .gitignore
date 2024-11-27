@@ -7,3 +7,8 @@ bin/
 .metadata
 .DS_Store
 scores.dat
+<<<<<<< HEAD
+=======
+.idea/
+*.iml
+>>>>>>> parent of b15d252 (1.3)

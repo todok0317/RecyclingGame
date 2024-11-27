@@ -46,7 +46,6 @@ public class TutorialDialogManager {
 <<<<<<< HEAD
 		Item item = levelData.getItemTemplates().get(index);
 		ImageIcon itemIcon = new ImageIcon(item.getImagePath());
-		String message = getItemMessage(level, item);
 
 		// 제목 이미지 로드 및 크기 조정
 		ImageIcon titleImageIcon = new ImageIcon("images/tutorial.png");
@@ -62,25 +61,22 @@ public class TutorialDialogManager {
 		itemLabel.setVerticalTextPosition(JLabel.BOTTOM);
 		itemLabel.setHorizontalTextPosition(JLabel.CENTER);
 
+		String message = "";
+
 		// 도구 레이블 생성 - 레벨 3에서만 추가되면 됨
 		JLabel toolLabel = null;
-		if ("3".equals(level) && item instanceof ComplexItem) {
+		if (Integer.parseInt(level) >= 3 && item instanceof ComplexItem) {
 			ComplexItem complexItem = (ComplexItem) item;
-			String necessaryToolName = complexItem.getNecessaryTool();
-			String toolImagePath = null;
+			String toolImagePath = "images/tools/" + complexItem.getNecessaryTool() + ".png";
+			
+			message = complexItem.getTutorialMessage();
 
-			if ("커터".equals(necessaryToolName)) {
-				toolImagePath = "images/cutter.png";
-			} else if ("싱크대".equals(necessaryToolName)) {
-				toolImagePath = "images/sink.png";
-			}
-
-			if (toolImagePath != null) {
-				ImageIcon toolIcon = new ImageIcon(toolImagePath);
-				toolLabel = new JLabel(necessaryToolName, toolIcon, JLabel.CENTER);
-				toolLabel.setVerticalTextPosition(JLabel.BOTTOM);
-				toolLabel.setHorizontalTextPosition(JLabel.CENTER);
-			}
+			ImageIcon toolIcon = new ImageIcon(toolImagePath);
+			toolLabel = new JLabel(complexItem.getNecessaryTool(), toolIcon, JLabel.CENTER);
+			toolLabel.setVerticalTextPosition(JLabel.BOTTOM);
+			toolLabel.setHorizontalTextPosition(JLabel.CENTER);
+		} else {
+			message = item.getTutorialMessage();
 		}
 
 		// 수평 박스 생성: 아이템과 도구를 나란히 배치
@@ -118,7 +114,7 @@ public class TutorialDialogManager {
 		dialog.getContentPane().setLayout(new BorderLayout());
 
 		// Next 버튼 생성 (크기 고정 및 정렬 조정)
-		JButton nextButton = new JButton("Next");
+		JButton nextButton = new JButton("다음");
 		nextButton.setFocusPainted(false);
 		nextButton.setPreferredSize(new Dimension(100, 40)); // 버튼 크기 유지
 		nextButton.setBackground(StyleManager.buttonColor);
@@ -141,9 +137,9 @@ public class TutorialDialogManager {
 		dialog.setVisible(true);
 	}
 
-<<<<<<< HEAD
 	// 레벨 설명 다이얼로그를 표시하는 메소드
 =======
+<<<<<<< HEAD
 =======
 	private String getItemMessage(String level, Item item) {
 		// 분리수거함 이름 정의
@@ -193,6 +189,8 @@ public class TutorialDialogManager {
 		Item item = levelData.getItemTemplates().get(index);
 		ImageIcon itemIcon = new ImageIcon(item.getImagePath());
 >>>>>>> parent of 079ed8a (튜토리얼 디자인 및 메세지 수정 & 레벨업 필요 튜토리얼 디자인 수정 (#6))
+=======
+>>>>>>> parent of b15d252 (1.3)
 
 		String message = getItemMessage(level, item);
 
@@ -294,23 +292,23 @@ public class TutorialDialogManager {
 		// 레벨별 이미지 경로와 메시지 설정
 		switch (level) {
 		case "1":
-			titleImageIcon = new ImageIcon("images/level1.png"); // 제목 이미지 경로
-			dialogMessage = "환영합니다, 분리배출 히어로!\r\n" + "첫 번째 임무는 기본 분리배출입니다.\r\n 유리병, 캔, 플라스틱 용기를\r\n 올바른 분리배출함에 넣어보세요!";
-			imagePath = "images/level1_image.png";
+			titleImageIcon = new ImageIcon("images/deco/level1.png"); // 제목 이미지 경로
+			dialogMessage = "환영합니다, 분리배출 히어로!\r\n" + "첫 번째 임무는 기본 분리배출입니다.\r\n 주어진 아이템들을 올바른 분리배출함에 넣어보세요!";
+			imagePath = "images/deco/level1_image.png";
 			break;
 		case "2":
-			titleImageIcon = new ImageIcon("images/level2.png");
+			titleImageIcon = new ImageIcon("images/deco/level2.png");
 			dialogMessage = "잘하고 있어요! 이제 분리배출의 달인으로 한 단계 더 나아가 볼까요?\r\n"
-					+ "이번 레벨에서는 PET와 종량제봉투가 추가됩니다.\r\n 새로운 아이템을 제대로 배출해 보세요!";
-			imagePath = "images/level2_image.png";
+					+ "이번 레벨에서는 새로운 아이템과 분리배출함이 추가됩니다.\r\n 새로운 아이템을 올바르게 배출해 보세요!";
+			imagePath = "images/deco/level2_image.png";
 			break;
 		case "3":
-			titleImageIcon = new ImageIcon("images/level3.png");
-			dialogMessage = "당신은 이제 분리배출 마스터가 될 준비가 되었습니다!\r\n" + "커터칼과 싱크대를 이용해\r\n 더 복잡한 분리배출을 완수해야 합니다. 도전하세요!";
-			imagePath = "images/level3_image.png";
+			titleImageIcon = new ImageIcon("images/deco/level3.png");
+			dialogMessage = "당신은 이제 분리배출 마스터가 될 준비가 되었습니다!\r\n" + "적절한 도구를 이용해\r\n 더 복잡한 분리배출을 완수해야 합니다. 도전하세요!";
+			imagePath = "images/deco/level3_image.png";
 			break;
 		default:
-			titleImageIcon = new ImageIcon("images/level1.png"); // 기본 이미지
+			titleImageIcon = new ImageIcon("images/deco/level1.png"); // 기본 이미지
 			dialogMessage = "레벨 정보가 잘못되었습니다.";
 			break;
 		}
@@ -420,7 +418,7 @@ public class TutorialDialogManager {
 
 <<<<<<< HEAD
 		// 버튼 구성
-		JButton nextButton = new JButton("Next");
+		JButton nextButton = new JButton("다음");
 		nextButton.setFocusPainted(false);
 		nextButton.setPreferredSize(new Dimension(100, 40));
 		nextButton.setBackground(StyleManager.buttonColor);

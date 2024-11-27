@@ -15,15 +15,16 @@ public class MainMenu extends JPanel {
 	public MainMenu(ActionListener startGameListener) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // 세로 방향으로 정렬
 
-		ImageIcon guideIcon = new ImageIcon("images/trashEarth2.png");
+		ImageIcon guideIcon = new ImageIcon("images/deco/trashEarth3.png");
 		JLabel imageLabel = new JLabel(guideIcon);
 		imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // X축으로 중앙 정렬
+		add(Box.createVerticalStrut(20));
 		add(imageLabel); // 이미지 추가
 
 		add(Box.createVerticalStrut(10)); // 이미지, 타이틀 사이의 간격 조정
 
-		JLabel title = new JLabel("Recycling Simulation Game", SwingConstants.CENTER);
-		title.setFont(StyleManager.fontLargeBold);
+		JLabel title = new JLabel("분리수거의 달인", SwingConstants.CENTER);
+		title.setFont(StyleManager.fontExtraLargeBold);
 		title.setAlignmentX(Component.CENTER_ALIGNMENT); // X축으로 중앙 정렬
 		add(title);
 
@@ -33,14 +34,14 @@ public class MainMenu extends JPanel {
 		add(subtitle); // 부제목 추가
 		add(Box.createVerticalStrut(20)); // 제목, 버튼 사이 간격 추가
  
-		JButton startButton = new JButton("Game Start");
-		startButton.setFont(StyleManager.buttonFont);
+		JButton startButton = new JButton("게임 시작");
+		startButton.setFont(StyleManager.fontLargeBold);
 		startButton.setPreferredSize(new Dimension(150, 50)); // 기본 크기 설정
 		startButton.setFocusPainted(false); // 버튼 포커스 테두리 제거
 		startButton.setOpaque(true); // 배경을 불투명하게 설정
 		startButton.setBackground(StyleManager.buttonColor); // 배경색 설정
 
-		JButton guideButton = new JButton("분리배출 가이드");
+		JButton guideButton = new JButton("자세한 분리배출 방법을 알고 싶다면?");
 		guideButton.setFont(StyleManager.buttonFont);
 		guideButton.setPreferredSize(new Dimension(150, 50)); // 기본 크기 설정
 		guideButton.setFocusPainted(false); // 버튼 포커스 테두리 제거
