@@ -26,6 +26,7 @@ public class LevelManager {
 		// 레벨1 데이터
 		List<Item> itemTemplates = new ArrayList<>();
 
+<<<<<<< HEAD
 		itemTemplates.add(new Item("물티슈 뚜껑", "플라스틱", "images/items/plastic_water.png"));
 		itemTemplates.add(new Item("배달음식 용기", "플라스틱", "images/items/plastic_squre.png"));
 		itemTemplates.add(new Item("콜라 빈 페트병", "플라스틱", "images/items/petbottle_none_cola.png"));
@@ -40,6 +41,23 @@ public class LevelManager {
 		bins.add(new Bin("플라스틱", "images/bins/plastic_bin.png"));
 		bins.add(new Bin("유리", "images/bins/glass_bin.png"));
 		bins.add(new Bin("캔류", "images/bins/can_bin.png")); //캔으로 수정하기
+=======
+		itemTemplates.add(new Item("빈 페트병", "플라스틱", "images/petbottle_black.png"));
+		itemTemplates.add(new Item("물티슈 뚜껑", "플라스틱", "images/plastic_water.png"));
+		itemTemplates.add(new Item("배달음식 용기", "플라스틱", "images/plastic_squre.png"));
+		itemTemplates.add(new Item("콜라 빈 페트병", "플라스틱", "images/petbottle_none_cola.png"));
+		itemTemplates.add(new Item("유리병", "유리", "images/glassbottle_sink_none.png"));
+		itemTemplates.add(new Item("유리컵", "유리", "images/glassbottle_cup.png"));
+
+		itemTemplates.add(new Item("종이", "종이", "images/paper.png"));
+		itemTemplates.add(new Item("포스트잇", "종이", "images/paper_2.png"));
+		itemTemplates.add(new Item("신문지", "종이", "images/paper_3.png"));
+
+		List<Bin> bins = new ArrayList<>();
+		bins.add(new Bin("플라스틱", "images/plastic_bin.png"));
+		bins.add(new Bin("유리", "images/glass_bin.png"));
+		bins.add(new Bin("종이", "images/paper_bin.png")); //캔으로 수정하기
+>>>>>>> parent of 17cec39 (레벨 아이템 구성 변경)
 
 		return new LevelData(1, itemTemplates, bins);
 	}
@@ -48,6 +66,7 @@ public class LevelManager {
 		// 레벨2 데이터
 		List<Item> itemTemplates = new ArrayList<>();
 
+<<<<<<< HEAD
 		itemTemplates.add(new Item("배달음식 용기", "플라스틱", "images/items/plastic_bowl.png"));
 		itemTemplates.add(new Item("물티슈 뚜껑", "플라스틱", "images/items/plastic_water.png"));
 		itemTemplates.add(new Item("배달음식 용기", "플라스틱", "images/items/plastic_squre.png"));
@@ -61,6 +80,19 @@ public class LevelManager {
 		
 		itemTemplates.add(new Item("휴지", "일반", "images/items/tissue.png"));
 		itemTemplates.add(new Item("프링글스 통", "일반", "images/items/pringles.png"));
+=======
+		itemTemplates.add(new Item("배달음식 용기", "플라스틱", "images/plastic_bowl.png"));
+		itemTemplates.add(new Item("물티슈 뚜껑", "플라스틱", "images/plastic_water.png"));
+		itemTemplates.add(new Item("배달음식 용기", "플라스틱", "images/plastic_squre.png"));
+		itemTemplates.add(new Item("빈 페트병", "플라스틱", "images/petbottle_black.png"));
+		itemTemplates.add(new Item("콜라 빈 페트병", "플라스틱", "images/petbottle_none_cola.png"));
+		itemTemplates.add(new Item("유리병", "유리", "images/glassbottle_sink_none.png"));
+		itemTemplates.add(new Item("유리컵", "유리", "images/glassbottle_cup.png"));
+		itemTemplates.add(new Item("종이", "종이", "images/paper.png"));
+		itemTemplates.add(new Item("포스트잇", "종이", "images/paper_2.png"));
+		itemTemplates.add(new Item("신문지", "종이", "images/paper_3.png"));
+		itemTemplates.add(new Item("휴지", "일반", "images/tissue.png"));
+>>>>>>> parent of 17cec39 (레벨 아이템 구성 변경)
 
 		List<Bin> bins = new ArrayList<>();
 		bins.add(new Bin("플라스틱", "images/bins/plastic_bin.png"));
@@ -75,6 +107,7 @@ public class LevelManager {
 		// 레벨3 데이터
 		List<Item> itemTemplates = new ArrayList<>();
 
+<<<<<<< HEAD
 		itemTemplates.add(new Item("빈 페트병", "페트", "images/items/petbottle_none_cola.png"));
 		
 		itemTemplates.add(new Item("유리병", "유리", "images/items/glassbottle_sink_none.png"));
@@ -92,6 +125,23 @@ public class LevelManager {
 		bins.add(new Bin("페트", "images/bins/pet_bin.png"));
 		bins.add(new Bin("유리", "images/bins/glass_bin.png"));
 		bins.add(new Bin("비닐", "images/bins/vinyl_bin.png"));
+=======
+		itemTemplates.add(new Item("빈 페트병", "페트", "images/petbottle_black.png"));
+		//itemTemplates.add(new Item("물티슈 뚜껑", "플라스틱", "images/plastic_water.png"));
+		//itemTemplates.add(new Item("배달음식 용기", "플라스틱", "images/plastic_squre.png"));
+		itemTemplates.add(new ComplexItem("라벨이 있는 페트병", "페트#cutter#비닐", "images/petbottle_cola_label.png", new Item("페트병", "페트", "images/petbottle_none_cola.png"), new Item("라벨", "비닐", "images/lable_vinyl.png"), "cutter"));
+		itemTemplates.add(new Item("유리병", "유리", "images/glassbottle_sink_none.png"));
+		itemTemplates.add(new ComplexItem("음료수가 있는 페트병", "페트#sink#", "images/petbottle_sink.png", new Item("페트병", "페트", "images/petbottle_sink_none.png"), "sink"));
+		itemTemplates.add(new Item("지퍼팩", "비닐", "images/vinyl.png"));
+		itemTemplates.add(new Item("비닐봉지", "비닐", "images/vinyl_2.png"));
+		itemTemplates.add(new Item("유리컵", "유리", "images/glassbottle_cup.png"));
+		
+		List<Bin> bins = new ArrayList<>();
+		//bins.add(new Bin("플라스틱", "images/plastic_bin.png"));
+		bins.add(new Bin("페트", "images/pet_bin.png"));
+		bins.add(new Bin("유리", "images/glass_bin.png"));
+		bins.add(new Bin("비닐", "images/vinyl_bin.png"));
+>>>>>>> parent of 17cec39 (레벨 아이템 구성 변경)
 		
 		List<Tool> tools = new ArrayList<>();
 		tools.add(new Tool("커터", "images/tools/커터.png"));
