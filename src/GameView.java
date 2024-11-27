@@ -16,18 +16,24 @@ public class GameView extends JPanel {
 	private JLabel incorrectMarkLabel; // X 표시용 JLabel
 	private Timer clearMarkTimer; // X 표시 제거 타이머
 	public JButton levelSelectButton;
-	private Image timerIcon; // 타이머 아이콘 이미지
-	private Image scoreIcon; // 점 아이콘 이미지
+	private Image timerIcon; //타이머 아이콘 이미지
+	private Image scoreIcon; //점 아이콘 이미지
 
 	public GameView(GameModel model) {
 		this.gameModel = model;
 		setLayout(null); // 절대 레이아웃 사용
 		setBackground(StyleManager.backgroundColor);
-
-		// 타이머, 스코어 이미지 로드
+		
+		//타이머, 스코어 이미지 로드
 		try {
+<<<<<<< HEAD
 			timerIcon = ImageIO.read(new File("images/deco/stopwatch.png"));
 			scoreIcon = ImageIO.read(new File("images/deco/star.png"));
+=======
+			timerIcon = ImageIO.read(new File("images/stopwatch.png"));
+			scoreIcon = ImageIO.read(new File("images/star.png"));
+			
+>>>>>>> parent of b284cf5 (Merge branch 'feature' into main)
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -39,14 +45,17 @@ public class GameView extends JPanel {
 		incorrectMarkLabel.setVisible(false); // 초기에는 보이지 않음
 		add(incorrectMarkLabel); // GameView에 추가
 
+		initializeLevelSelectButton();
+		setComponentZOrder(levelSelectButton, 0); // 버튼을 최상위로 설정
 		revalidate();
 		repaint();
+
 	}
 
 	// 레벨 선택 화면으로 돌아가는 버튼 생성
 	private void initializeLevelSelectButton() {
 		levelSelectButton = new JButton("이전");
-
+		
 		levelSelectButton.setFont(StyleManager.buttonFont);
 		levelSelectButton.setFocusPainted(false);
 		levelSelectButton.setOpaque(true);
@@ -59,20 +68,18 @@ public class GameView extends JPanel {
 		int buttonY = 5;
 
 		levelSelectButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
-		add(levelSelectButton);
-		setComponentZOrder(levelSelectButton, 0); // 버튼을 최상위로 설정
 	}
 
 	// 게임 화면 초기화
 	public void resetView() {
 		removeAll(); // 컴포넌트 모두 제거 (아이템, 분리수거 통들)
 
+		add(levelSelectButton);
+
 		displayBins(); // 분리수거 통 배치
 		displayNewItem(); // 아이템 배치
-		displayTools(); // 도구 배치
+		displayTools();	// 도구 배치
 		add(incorrectMarkLabel); // X 표시 JLabel 다시 추가
-
-		initializeLevelSelectButton();
 	}
 
 	private ImageIcon getResizedIcon(String path, int width, int height) {
@@ -132,7 +139,7 @@ public class GameView extends JPanel {
 		int itemWidth = items.get(0).getWidth();
 		int itemHeight = items.get(0).getHeight();
 		int spacing = 40;
-
+		
 		int totalWidth = (itemWidth * items.size()) + (spacing * (items.size() - 1));
 		int startX = (panelWidth - totalWidth) / 2; // 중앙 정렬을 위한 X 좌표
 		int yPosition = panelHeight - itemHeight - 40; // 하단에서 20px 위로 위치
@@ -145,7 +152,7 @@ public class GameView extends JPanel {
 
 		repaint(); // 화면 업데이트
 	}
-
+	
 	// 도구들을 배치하는 메소드
 	private void displayTools() {
 		// 우측 중앙에 세로로 배치
@@ -155,13 +162,13 @@ public class GameView extends JPanel {
 			int toolWidth = gameModel.getBins().get(0).getWidth(); // 도구의 폭
 			int toolHeight = gameModel.getBins().get(0).getHeight();
 			int spacing = 10; // tool 간격
-
+	
 			List<Tool> tools = gameModel.getTools();
 			int totalHeight = (toolHeight * tools.size()) + (spacing * (tools.size() - 1));
-
+	
 			int startY = (panelHeight - totalHeight) / 2; // 중앙 정렬을 위한 시작 y 좌표
 			int xPosition = panelWidth - toolWidth;
-
+	
 			for (int i = 0; i < tools.size(); i++) {
 				tools.get(i).setBounds(xPosition, startY + i * (toolWidth + spacing), toolWidth, toolHeight);
 				add(tools.get(i)); // 패널에 추가
@@ -172,38 +179,38 @@ public class GameView extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
-		// 타이머 바 그리기
+		
+		//타이머 바 그리기
 		int totalBarWidth = 300;
 		int barHeight = 20;
 		int remainingTime = gameModel.getTimeLeft();
 		int maxTime = 30;
-
-		// 남은 시간을 바의 너비로 환산
-		int currentBarWidth = (int) ((remainingTime / (float) maxTime) * totalBarWidth);
-
-		// 바의 위치 설정
+		
+		//남은 시간을 바의 너비로 환산
+		int currentBarWidth = (int)((remainingTime / (float) maxTime) * totalBarWidth);
+		
+		//바의 위치 설정
 		int barX = 887;
 		int barY = 75;
-
-		// 바 그리기
+		
+		//바 그리기
 		g.setColor(Color.RED);
 		g.fillRect(barX, barY, currentBarWidth, barHeight);
-
-		// 바의 경계선
+		
+		//바의 경계선
 		g.setColor(Color.BLACK);
 		g.drawRect(barX, barY, currentBarWidth, barHeight);
-
-		// 타이머 아이콘 그리기
+		
+		//타이머 아이콘 그리기
 		if (timerIcon != null) {
 			g.drawImage(timerIcon, 730, 50, 70, 70, this);
 		}
-
+		
 		// 점수 별 그리기
 		if (scoreIcon != null) {
 			g.drawImage(scoreIcon, 450, 50, 60, 60, this);
 		}
-
+		
 		// 타이머 및 점수 표시
 		g.setFont(StyleManager.fontExtraLargeBold);
 		g.drawString("  " + remainingTime, 800, 100);
